@@ -1,0 +1,429 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Facelet Title</title>
+          <!--<h:outputStylesheet library="Styles" name="fileUploadtxt.css"></h:outputStylesheet>-->
+    </h:head>
+    <h:body>
+        <div class="bodyAdmItem4">
+            <div class="floaToLeft">
+                <h:form id="gestUser">
+                    <h:inputText pt:placeholder="Procurar por nome ou nif"  value="#{userBean.pesquisar}" id="pesquisar" >
+                        <p:ajax event="change" process="pesquisar estado" listener="#{userBean.pesquisarUtilizador()}" update="userTable" />
+                    </h:inputText>
+                    <h:selectBooleanCheckbox class="check" value="#{userBean.estadoUtilizador}" id="estado">
+                        <f:selectItem itemLabel="Mostrar desabilitados" itemValue="true" />      
+                        <p:ajax event="click" process="pesquisar estado" listener="#{userBean.pesquisarUtilizador()}" update="userTable"/>
+                    </h:selectBooleanCheckbox>
+                    <h:outputLabel value="Mostrar desabilitados"  class="showM"/>
+                    <p:dataTable selection="#{userBean.utilizadorSelected}" 
+                                 rowKey="#{user}" selectionMode="single" id="userTable"
+                                 scrollable="true" scrollHeight="450"
+                                 var="user" value="#{userBean.listaUtilizadores}" >
+                        <p:column headerText="IMG" width="3">
+                            <h:graphicImage url="#{user.fotoLocal}" width="20px" height="20px"/>
+                        </p:column>
+                        <p:column  headerText="Nome" width="98">
+                            <h:outputText value="#{user.nome}" />
+                        </p:column>  
+                        <p:ajax event="rowDblselect" listener="#{userBean.alterarConfiguracao()}" />
+                    </p:dataTable>
+                    
+                    <div class="divbtControlUser">
+                        <h:commandButton class="btContUser" value="Ativar / Desativar" action="#{userBean.confTestUser(1)}" >
+                            <p:ajax process="@this" update="@none"/>
+                        </h:commandButton>
+                        <h:commandButton class="btContUser" value="Redefinir senha" action="#{userBean.confTestUser(2)}" >
+                            <p:ajax process="@this" update="@none"/>
+                        </h:commandButton>
+                    </div>
+                </h:form>    
+            </div>
+            <div class="floaToRight">
+                <h:form id="formRegUser"  enctype="multipart/form-data">
+            
+                    <p:growl id="infoUtilizador" life="10000" />
+                    <div class="divIMG">
+                        <h:graphicImage class="imgUser"  url="#{userBean.imagem}"  id="userImage"/> 
+                        <h:inputFile class="uploadIMG" label="carregar" id="getImagem" value="#{userBean.utilizador.foto}">
+                            <f:ajax event="change" listener="#{userBean.handleFileUpload()}"/>
+                        </h:inputFile>
+                        <label for="formRegUser:getImagem" title="Clique para carregar foto">Carregar foto</label>
+                    </div>
+                    <h:inputText pt:placeholder="NIF" id="nifUtilizador" required="true" value="#{userBean.utilizador.nif}"
+                                 class="nifUtilizador" maxlength="9">
+                    </h:inputText>
+                    
+                    <h:inputText pt:placeholder="Nome completo" id="nomeUtilizador" required="true"
+                                 value="#{userBean.utilizador.nome}" class="nomeUtilizador" />
+                    <h:selectOneMenu value="#{userBean.utilizador.idAgencia}" required="true" class="select agenciaUtilizador" id="agenciaUtilizador" >
+                        <f:selectItem itemValue="" itemLabel="(Selecione Agencia)"/>
+                        <f:selectItems value="#{userBean.listaAgencia}" var="ag" itemValue="#{ag.id}" itemLabel="#{ag.value}"/>
+                        <p:ajax event="change" process="@this" update="@this" />
+                    </h:selectOneMenu>
+                    <h:selectOneRadio class="select" id="perfilUtilizador" value="#{userBean.utilizador.perfil}">
+                        <f:selectItem itemLabel="Operador"  itemValue="1"  />
+                        <f:selectItem itemLabel="Analista" itemValue="2"/> 
+                        <f:selectItem itemLabel="Administrador" itemValue="3"/>     
+                        <p:ajax event="change" process="@this" update="@this" />
+                    </h:selectOneRadio>
+                    
+                    
+                    <h:commandButton value="Salvar"  class="regUtilizador salvarUser" action="#{userBean.registrarUtilizador()}">
+                        <f:ajax execute="nifUtilizador nomeUtilizador" />
+                    </h:commandButton>
+                    <h:commandButton value="Cancelar" style="display: none;" class="Cancelar cancelarAlter">
+                        <f:ajax render="@none" listener="#{userBean.alterarConfiguracaoCancelar()}" />
+                    </h:commandButton>
+                </h:form>
+            </div>
+        </div>
+        <div class="modalPage modalGestConfig1">
+            <div class="modalFrame modalFrame0" align="center">
+                <h:panelGrid columns="1" style="text-align: center; padding-top: 15px" >
+                    <h:outputLabel class="textModalConfig"  value="Tens a certeza que queres Concluir o Pocesso?"/>
+                </h:panelGrid>
+                <h:form>
+                    <div class="buttonsModal">
+                        <h:commandButton value="Sim" class="confirmButtons simModal">
+                            <p:ajax event="click" listener="#{userBean.alteraConfiDesative()}" process="@form" 
+                                    update="@none" oncomplete="$('.modalGestConfig1').hide();" />
+                        </h:commandButton>
+                        <h:commandButton value="Não" class="confirmButtons Cancelar" >
+                            <p:ajax event="click" oncomplete="$('.modalGestConfig1').hide();" update="@none" />
+                        </h:commandButton>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+        <div class="modalPage modalGestConfig2">
+            <div class="modalFrame modalFrame0" align="center">
+                <h:panelGrid columns="1" style="text-align: center; padding-top: 15px" >
+                    <h:outputLabel class="textModalConfig"  value="Tens a Certeza que queres Concluir o Pocesso?"/>
+                </h:panelGrid>
+                <h:form>
+                    <div class="buttonsModal">
+                        <h:commandButton value="Sim" class="confirmButtons simModal">
+                            <p:ajax event="click" listener="#{userBean.alteraConfiRedifinir()}" process="@form"
+                                    update="@none" oncomplete="$('.modalGestConfig2').hide();" />
+                        </h:commandButton>
+                        <h:commandButton value="Não" class="confirmButtons Cancelar" >
+                            <p:ajax event="click" oncomplete="$('.modalGestConfig2').hide();" update="@none" />
+                        </h:commandButton>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+        <div class="modalPage modalGestConfig3">
+            <div class="modalFrame modalFrame0" align="center">
+                <h:panelGrid columns="1" style="text-align: center; padding-top: 15px" >
+                    <h:outputLabel class="textModalConfig1"  value="Tens a certeza que queres Concluir o Pocesso?"/>
+                </h:panelGrid>
+                <h:form>
+                    <div class="buttonsModal">
+                        <h:commandButton value="Sim" class="confirmButtons simModal">
+                            <p:ajax event="click" listener="#{userBean.confTestUser(3)}" process="@form" 
+                                    update="@none" oncomplete="$('.modalGestConfig3').hide();" />
+                        </h:commandButton>
+                        <h:commandButton value="Não" class="confirmButtons Cancelar" >
+                            <p:ajax event="click" oncomplete="$('.modalGestConfig3').hide();" update="@none" />
+                        </h:commandButton>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+
+    </h:body>
+    <style>
+        .bodyAdmItem4{display: table;}
+        .bodyAdmItem4 .floaToLeft{
+            float: left;
+            width: 26%;
+            position: relative;
+            /*//outline: 1px #767676 solid;*/
+        }
+        .Cancelar{
+            float: right;
+            background: #F0F0F0 !important;
+            border: 1px #ddd solid !important;
+            color: #555 !important;
+        }
+        .bodyAdmItem4 > div{
+            margin-top: 20px;
+        }
+        .bodyAdmItem4 .floaToRight{
+            float: right;
+            width: 72%;
+            border: 1px #eee solid;
+            background: #fcfcfc;
+            padding: 8px 32px;
+            box-sizing: border-box;
+            min-height: 688px;
+        }
+        .bodyAdmItem4 .floaToLeft input[type="text"]{
+            height: 26px;
+            width: 100%;
+            box-sizing: border-box;
+/*          border: none;
+            border-bottom: 1px #767676 solid;*/
+            border:  1px #767676 solid;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            text-indent: 8px;            
+        } 
+        .bodyAdmItem4 .floaToLeft .check{
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .bodyAdmItem4 .floaToRight input[type="text"]+input[type="text"], .bodyAdmItem4 .floaToRight .select{
+            width: 60%;
+            margin-top: 22px;            
+        }
+        .floaToRight input[type="text"],
+        .floaToRight select{
+            font: 14px arial, sans-serif;
+            display: block;
+            height: 38px;
+            padding: 8px 5px;
+            border: 1px #bbb solid;
+            border-radius: 3px;
+            box-sizing: border-box;
+            margin-bottom:8px;
+            background: #fff;            
+        }
+        .info{
+            color: red;
+        }
+        .floaToRight input[value='Editar'],
+        .floaToRight input[value='Salvar'],
+        .floaToRight input[value='Cancelar']{
+            border: none;
+            background: #0066ff;
+            color: #fff;
+            padding: 8px 26px;
+            font: bold 16px arial, sans-serif;
+            border-radius: 4px;
+            float: right;
+            cursor: pointer; 
+            margin: 100px 10px 12px 10px;
+            transition: all .8s ease;
+        }
+        .floaToRight input[value='Editar']:hover input[value='Salvar']:hover{
+            background: #4d87e2;
+            transition: all .8s ease;
+        }
+        .floaToRight input[value='Cancelar']{
+            background: #4d87e2;
+            transition: all .8s ease;
+        }
+        .bodyAdmItem4 input, .bodyAdmItem4 select{outline: none;}
+          .ui-growl-item-container {
+            background:rgba(0,0,0,0.6);
+   
+        }
+        .ui-growl-title {
+            font: 14px cambria;
+        }
+        .ui-growl-message p {
+            font: 16px sans-serif;
+            text-align: left;
+        }
+        .ui-growl-icon-close {
+            background: white;
+        } 
+        .showM{
+            font: 13px sans-serif;
+        } 
+        
+        .configUserTitP{
+            font: 18px sans-serif;
+            font-weight: bold; 
+        }
+        
+        .configUserTitS{
+            font: 15px sans-serif;
+            font-weight: bold; 
+        }
+        .configUserComo{
+            font: 13px sans-serif;
+            margin-right: 10px;
+        }
+        
+        .confiButtonBlue{
+            border: none;
+            background: #0066ff;
+            color: #fff;
+            padding: 8px 26px;
+            font: bold 16px arial, sans-serif;
+            border-radius: 4px;
+            float: right;
+            cursor: pointer; 
+            margin: 15px 0 0px 0;
+            transition: all .8s ease;
+        }
+        .confiButtonGrey{
+            border: none;
+            background: #BFBFBF;
+            color: #fff;
+            padding: 8px 26px;
+            font: bold 16px arial, sans-serif;
+            border-radius: 4px;
+            float: right;
+            cursor: pointer; 
+            margin: 15px 0 0px 0;
+            transition: all .8s ease;
+        }
+        .divbtControlUser{
+            /*//position: absolute;*/
+            margin: 20px auto;
+            width: 90%;
+        }
+        .divbtControlUser .btContUser{
+            width: 100%;
+            border: 1px #ddd solid;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-size: 1em;
+            color: #444;
+            line-height: 2.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all .4s ease;
+        }
+        .divbtControlUser .btContUser:hover{
+            background: #ddd;
+            border: 1px #eee solid;
+            transition: all .4s ease;
+        }
+        .divIMG{
+            position: relative;
+            width: 156px;
+            height: 160px;
+            margin-bottom: 3em;
+        }
+        .floaToRight .divIMG img{
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .divIMG label{
+            position: absolute;
+            width: 100%;
+            height: 35px;
+            bottom: 0;
+            left: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,.5);
+            color: #eee;
+        }
+        .divIMG .uploadIMG{
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+        $(".regUtilizador").click(function (e)
+        {
+            
+           e.preventDefault();
+           var nome = $(".nomeUtilizador").val();
+           var nif = $(".nifUtilizador").val();
+           var agencia = $(".agenciaUtilizador").val();
+           if(nome ==="")
+               $(".nomeUtilizador").css("border","1px solid red");
+           else
+               $(".nomeUtilizador").css("border","");
+           
+           if(agencia === "")
+               $(".agenciaUtilizador").css("border","1px solid red");
+           else
+               $(".agenciaUtilizador").css("border","");
+           
+           if(nif ==="")
+               $(".nifUtilizador").css("border","1px solid red");
+           else
+           {
+              $(".nifUtilizador").css("border","");
+               if(nif.length !==9)
+               {
+                   
+                    $(".nifUtilizador").css("border","1px solid red");
+                    $(".nifUtilizador").focus();
+               }
+               else
+               {
+                   $(".nifUtilizador").css("border","");
+               }
+                 
+           }
+              
+        });
+        function utilizadorRegistrado()
+        {
+            $(".nifUtilizador").val("");
+            $(".nomeUtilizador").val("");
+        }
+        $(".nifUtilizador").keyup(function(e){
+            e.preventDefault();
+            var expre = /[^0-9]/g;
+            // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
+            if ($(this).val().match(expre))
+                $(this).val($(this).val().replace(expre,''));
+   });
+     function NIFInvalido()
+     {
+           $(".nifUtilizador").css("border","1px solid red");
+           $(".nifUtilizador").focus();
+     }
+     $(".closeModal").click(function (e)
+     {
+         closeModal();
+     });
+     
+     function typeOperacaoRedifinir()
+     {
+         $('.modalGestConfig2').show();
+         $(".bt2Redifinir").css("display","block");
+         $(".bt2Desativar").css("display","none");
+     }
+     
+     function typeOperacaoDesativar()
+     {
+         $('.modalGestConfig1').show();
+         $(".bt2Redifinir").css("display","none");
+         $(".bt2Desativar").css("display","block");
+     }
+     
+     function typePerfilAgencia()
+     {
+         $(".cancelarAlter").css("display","block");
+         $('.nomeUtilizador').attr("disabled", true);
+         $('.nifUtilizador').attr("disabled", true);
+         $('.uploadIMG').attr("disabled", true);
+         $('.salvarUser').val("Editar");
+     }
+     
+     function typePerfilAgenciaCancelar()
+     {
+         $(".cancelarAlter").css("display","none");
+         $('.nomeUtilizador').attr("disabled", false);
+         $('.nifUtilizador').attr("disabled", false);
+         $('.uploadIMG').attr("disabled", false);
+         $('.salvarUser').val("Salvar");
+     }
+     
+     function closeModal()
+     {
+         $(".alterEstado").hide();
+     }
+     
+    </script>
+</html>
+

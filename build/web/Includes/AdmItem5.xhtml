@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>FeedBack</title>
+            <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+            <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+            <h:outputScript library="JQuery" name="queryOne.js" />
+            <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    <h:body>
+
+        <h:form id="formEmail" >
+            <p:growl id="gEmail" life="10000" />
+            <div class="master5">
+                <div class="admi5">
+                    <p>
+                        Nome
+                        <h:inputText required="true" value="#{sendEmailBean.email.nome}" class="mensagemNome"></h:inputText>
+                    </p>
+                    <p>
+                        Email de resposta
+                        <h:inputText value="#{sendEmailBean.email.emailReenvio}" class="mensagemEmail"></h:inputText>
+                    </p>
+                    <p>
+                        Assunto
+                        <h:selectOneMenu required="true" value="#{sendEmailBean.email.assunto}" class="mensagemAssunto">
+                            <f:selectItem itemValue="" itemLabel="(Selecione o assunto)"/>
+                            <f:selectItem itemValue="Sugestões" itemLabel="Sugestões"/>
+                            <f:selectItem itemValue="Erros" itemLabel="Erros"/>
+                            <f:selectItem itemValue="Mau funcionamento" itemLabel="Mau funcionamento"/>
+                            <f:selectItem itemValue="Apoio" itemLabel="Apoio"/>
+                            <f:selectItem itemValue="Outro" itemLabel="Outro"/>
+                        </h:selectOneMenu> 
+                    </p>
+                    <p>
+                        Mensagem
+                        <h:inputTextarea required="true" value="#{sendEmailBean.email.mesagem}" class="mensagemInfo"/>
+                    </p>
+                    <h:commandButton value="Enviar"  class="mensagemEnviar" action="#{sendEmailBean.setMessage()}">
+                        <p:ajax update="@none" process="@form" />
+                    </h:commandButton>
+                </div>
+                <div class="info5">
+                    <p>Em caso de qualquer dúvida ou necessidade em nos contactar, não exite.<br/>
+                        Preencha o formulário ao lado e teremos muito gosto em prestar-vos assistência
+                        assim que seja possivel.
+                        <br/><br/>Contamos com a sua colaboração para melhorarmos os nossos serviços.<br/><br/><span>A equipa da JIGAsoft STP</span></p>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+    <style>
+        .master5{
+            display: flex;
+            justify-content: space-between;
+        }
+        .admi5{
+            margin-left: 20px;
+            width: 50%;
+        }
+        .admi5 p{
+            margin: 10px 0;
+            margin-bottom: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+        }
+        .admi5 p input,
+        .admi5 p select,
+        .admi5 p textArea{
+            width: 100%;
+            padding: 8px 5px;
+            border: 1px #ccc solid;
+            font-size: .95em !important;
+        }
+        .admi5 p textArea{
+            height: 150px;
+        }
+        .admi5 > input{
+            cursor: pointer;
+            border: 1px solid #ccc;
+            margin: 5px 0px;
+            font-size: 0.95em;
+            padding: 10px 30px;
+            border-radius: 3px;
+            margin-bottom: 4em;
+        }
+        .info5{
+            width: 40%;
+        }
+        .info5 p{
+            margin-top: 20px;
+            line-height: 1.7em;
+            padding-right: 25px;
+        }
+        .info5 p span{
+            font-weight: bold !important;
+        }
+    </style>
+</html>
+

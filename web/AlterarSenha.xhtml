@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+            <p:dialog  modal="true" widgetVar="dlg" visible="false"  >
+            
+            <h:panelGrid columns="1" style="width: 100%;">
+                <h:panelGrid columns="2"> 
+                    <h:outputLabel value="Nome de Utilizador" value="#{utilizadorBean.utilizador.nome}"/>
+                    <h:outputLabel />
+                </h:panelGrid>
+                
+                <h:panelGrid columns="2"> 
+                    <h:outputLabel value="NIF" value="#{utilizadorBean.utilizador.nif}"/>
+                    <h:outputLabel />
+                </h:panelGrid>
+                
+                <h:panelGrid columns="2"> 
+                    <h:outputLabel value="Palavra-passe atual" />
+                    <h:inputSecret value="#{utilizadorBean.utilizador.senhaAtual}" />
+                </h:panelGrid>
+                <h:panelGrid columns="2"> 
+                    <h:outputLabel value="Nova palavra-passe"/>
+                    <h:inputSecret value="#{utilizadorBean.utilizador.novaSenha}" />
+                </h:panelGrid>
+  
+                <h:panelGrid columns="2"  style="width: 100%;"> 
+                    <h:outputLabel value="Confirmar nova palavra-passe"/>
+                    <h:inputSecret  value="#{utilizadorBean.utilizador.confirmarSenha}"/>
+                </h:panelGrid >
+              <h:panelGrid columns="2" style="width: 100%;">
+                    <h:commandButton value="Guardar" style="width: 95%;" class="btImprim" action="#{pesquisa.Operacao(0)}">
+                   
+                </h:commandButton>
+                    <h:commandButton value="Cancelar" style="width: 95%;" class="btImprim" onclick="PF('dlg').hide()">
+                        <p:ajax />
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:panelGrid> 
+        </p:dialog>
+    </h:body>
+</html>
+

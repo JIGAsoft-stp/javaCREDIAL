@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+         <h:outputScript library="JQuery" name="ajaxLoading.js" />
+        <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    <h:body>
+        <h:form id="relatorioCobranca">
+            <div class="divFlex">
+                <section>
+                    <h:outputLabel value="Data Inicio"/>
+                    <p:calendar value="#{relatorioBean.relatorio.dataInicial}"
+                                navigator="true" id="dataInicialCobranca"
+                        pattern="dd-MM-yyyy" >
+                        <p:ajax process="@this dataFinalCobranca periodoComparacaoCobranca tipoCredito bancoCobranca agenciaCobranca" 
+                                event="dateSelect"
+                                  onstart="mostrarRelCreditoCobranca()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioCobranca()}" 
+                                    />
+                    </p:calendar>
+               </section>
+                <section>
+                    <h:outputLabel class="dtFim" value="Data Fim"/>
+                    <p:calendar navigator="true"  value="#{relatorioBean.relatorio.dataFinal}"
+                        pattern="dd-MM-yyyy" id="dataFinalCobranca">
+                          <p:ajax process="@this dataInicialCobranca periodoComparacaoCobranca tipoCredito bancoCobranca agenciaCobranca" 
+                                  event="dateSelect"
+                                    onstart="mostrarRelCreditoCobranca()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioCobranca()}" />
+                    </p:calendar>
+                </section>
+                <section>
+                    <h:outputLabel value="Agência"></h:outputLabel>
+                    <h:selectOneMenu class="selet" value="#{relatorioBean.relatorio.agencia}" id="agenciaCobranca">
+                        <f:selectItems value="#{relatorioBean.agencias}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                         <p:ajax process="dataInicialCobranca dataFinalCobranca periodoComparacaoCobranca tipoCredito bancoCobranca agenciaCobranca"
+                            event="change"
+                              onstart="mostrarRelCreditoCobranca()"
+                            oncomplete="fecharProcessamento()"
+                           listener="#{relatorioBean.relatorioCobranca()}" />
+                     </h:selectOneMenu>
+                </section>  
+                <section>
+                    <h:outputLabel value="Periodo"  />
+                    <h:inputText class="txtPer cobrancaPeriodoC" value="#{relatorioBean.relatorio.periodoEmComparacao}"  id="periodoComparacaoCobranca">
+                          <p:ajax process="dataInicialCobranca dataFinalCobranca periodoComparacaoCobranca tipoCredito bancoCobranca agenciaCobranca" 
+                                  event="change"
+                                    onstart="mostrarRelCreditoCobranca()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioCobranca()}"/>
+                    </h:inputText>
+                </section>
+                <section>
+                    <h:outputLabel value="Tipo Credito" />
+                    <h:selectOneMenu class="tipCred" value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCredito">
+                        <f:selectItems value="#{relatorioBean.tipoCredito}" var="t" itemValue="#{t.id}" itemLabel="#{t.value}"/>
+                         <p:ajax process="dataInicialCobranca dataFinalCobranca periodoComparacaoCobranca tipoCredito bancoCobranca agenciaCobranca"
+                                 event="change"
+                                   onstart="mostrarRelCreditoCobranca()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioCobranca()}" />
+                    </h:selectOneMenu>
+                </section>
+                <section>
+                    <h:outputLabel value="Banco" />
+                    <h:selectOneMenu class="banco" value="#{relatorioBean.relatorio.banco}" id="bancoCobranca">
+                        <f:selectItems value="#{relatorioBean.bancos}" var="b" itemValue="#{b.id}" itemLabel="#{b.value}"/>
+                          <p:ajax process="dataInicialCobranca dataFinalCobranca periodoComparacaoCobranca tipoCredito bancoCobranca"
+                                  event="change" 
+                                  onstart="mostrarRelCreditoCobranca()"
+                                 oncomplete="fecharProcessamento()"
+                                  listener="#{relatorioBean.relatorioCobranca()}"/>
+                    </h:selectOneMenu>
+                </section>    
+        </div>
+        
+            <p:dataTable value="#{relatorioBean.listaCobranca}"  scrollHeight="350" scrollable="true" 
+                         var="co" id="tabelaCobranca" emptyMessage="">
+                <p:column headerText="NIF" sortBy="#{co.nif}">
+                <h:outputText value="#{co.nif}" />
+            </p:column>
+                <p:column headerText="Nome" sortBy="#{co.nome}">
+                <h:outputText value="#{co.nome}" />
+            </p:column>
+                <p:column headerText="Apelido" sortBy="#{co.apelido}">
+                <h:outputText value="#{co.apelido}" />
+            </p:column>
+                <p:column headerText="Valor Reembolso" sortBy="#{co.reembolso}">
+                <h:outputText value="#{co.reembolso}" />
+            </p:column>
+                <p:column headerText="Nº doc real" sortBy="#{co.numDocReal}">
+                <h:outputText value="#{co.numDocReal}" />
+            </p:column>
+                <p:column headerText="Nº Doc previsto" sortBy="#{co.numDocPrevisao}">
+                <h:outputText value="#{co.numDocPrevisao}" />
+            </p:column>
+                <p:column headerText="Data real" sortBy="#{co.dataReal}">
+                <h:outputText value="#{co.dataReal}" />
+            </p:column>
+                <p:column headerText="Data prevista" sortBy="#{co.dataPrevista}">
+                <h:outputText value="#{co.dataPrevista}" />
+            </p:column>
+        </p:dataTable>
+            <h:outputLabel value="Total:"  class="total" style="margin-left: 400px;"/><h:outputLabel id="totalCobranca" value="#{relatorioBean.reembolso}" style="font-size: 12px;" />
+        <div class="modalPage modalImage">
+                <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+          </div>
+        </h:form> 
+    </h:body>
+    <style>
+        body{
+            font: arial, sans-serif;
+        }
+        div{
+            width: 100%;
+        }
+        .divFlex{
+            display: flex; 
+        }
+        section{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+     <script>
+        $(".cobrancaPeriodoC").keyup(function(e){
+        e.preventDefault();
+        var expre = /[^0-9]/g;
+        // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
+        if ($(this).val().match(expre))
+            $(this).val($(this).val().replace(expre,''));
+   });
+    </script>
+</html>
+

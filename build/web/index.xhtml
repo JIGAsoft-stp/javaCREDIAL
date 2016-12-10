@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="styleLogin.css"></h:outputStylesheet> 
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet> 
+        <h:outputStylesheet library="Styles" name="editPassCSS.css"></h:outputStylesheet>  
+        <title>Credial Lda</title>        
+    </h:head>
+    <h:body>
+         <ui:include src="Includes/menu.xhtml"></ui:include>
+        <h:form class="formLogin">  
+            <h1>Login</h1> 
+            <h:graphicImage width="150px" height="150px" id="isg" url="#{loginBean.utilizador.imageLogar}"/>
+            <h:outputText class="msgError" id="imsg" value="#{loginBean.mensagem}"  escape="false"></h:outputText>
+            
+            <div>
+                <label>Utilizador</label>
+                <h:inputText class="txt nifLogin" value="#{loginBean.utilizador.nif}">
+                    <p:ajax process="@form" event="keyup" update="isg imsg" listener="#{loginBean.setMensagem(null)}"/>
+                </h:inputText>
+            </div>
+            <div>
+                <label>Senha</label>
+                <h:inputSecret  value="#{loginBean.utilizador.senha}" >
+                    <p:ajax process="@form" event="keyup" update="isg imsg" listener="#{loginBean.setMensagem(null)}"/>
+                </h:inputSecret>
+            </div>
+            
+            <h:commandButton value="Entrar" class="bt botaoLogin" action="#{loginBean.logar()}" />  
+        </h:form>
+        
+        <div class="modalPage modalAtivarUtilizador">
+            <div class="modalFrame modalFrame1">
+                <div class="closeModal">x</div>
+                <h2>Seja bem vindo <h:outputLabel value="#{loginBean.utilizador.nomeUtilizador}" id="utilizador"></h:outputLabel></h2>
+                <p>Por razões de segurança, é obrigatório que altere sua senha atual para obter acesso ao sistema.</p>
+                <h:form id="alterarSenhaForm">
+                    <p>
+                        Utilizador: <h:outputLabel value="#{loginBean.utilizador.nif}" id="alterarSenhaNif"></h:outputLabel>     
+                    </p>
+                    <p>
+                        Nova senha 
+                        <h:inputSecret value="#{loginBean.utilizador.novaSenha}" class="novaS novaSenhaAtivar"/>
+                    </p>
+                    <p>
+                        Confirme a nova senha
+                        <h:inputSecret value="#{loginBean.utilizador.confirmarSenha}" class="confSenha confSenhaAtivar"/>
+                    </p>
+                    <p>
+                        <h:commandButton value="Concluir" action="#{loginBean.alterarSenha()}" class="concluirSenha">
+                            <f:ajax execute="alterarSenhaForm"/>
+                        </h:commandButton>
+                        <h:commandButton value="Cancelar" class="fechar"/>
+                    </p>
+                </h:form>
+            </div>
+        </div>
+        
+    </h:body>
+    
+    
+    <script>
+        $(".nifLogin").focus();
+        function mostrarModal()
+        {
+             $(".modalAtivarUtilizador").show($(".modalAtivarUtilizador").slideDown(400));
+        }
+        function mensagem()
+        {
+            alert("As senhas não se correspondem");
+            $(".novaSenhaAtivar").val("");
+            $(".confSenhaAtivar").val("");
+            $(".novaSenhaAtivar").focus();
+        }
+        $(".closeModal").click(function()
+        {
+            fecharModal();
+        });
+         $(".fechar").click(function()
+        {
+            fecharModal();
+        });
+        
+     $(".concluirSenha").click(function()
+        {
+           
+           var novaSenha = $(".novaSenhaAtivar").val();
+           var conf = $(".confSenhaAtivar").val();
+           if(novaSenha ==="")
+           {
+               $(".novaSenhaAtivar").focus();
+           }
+        });
+        function fecharModal()
+        {
+            $(".modalAtivarUtilizador").hide($(".modalAtivarUtilizador").fadeOut(400)); 
+        }
+    </script>
+      <style>
+        header{
+            display: none;
+        }
+        .formLogin input{
+            font-size: 1em;
+            padding: 8px 5px;
+        }
+    </style>
+</html>
+

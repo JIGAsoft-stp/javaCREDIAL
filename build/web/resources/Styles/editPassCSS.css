@@ -1,0 +1,69 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22/dez/2015, 18:11:22
+    Author     : ildo
+*/
+
+.modalPage [type=text],
+.modalPage [type=password]{
+    width: 100%;
+    padding: 10px 5px;
+    font-size: 15px;
+    background: #f9f9f9;
+    border-radius: 3px;
+    transition: all .3s ease;
+}
+.modalPage [type=text]:focus,
+.modalPage [type=password]:focus{
+    background: #fff;
+    transition: all .3s ease;   
+}
+.modalFrame form{
+    margin-top: 25px;
+    color: #444;
+}
+.modalFrame h2{
+    color: #31AF70; 
+    margin-bottom: 25px;
+}
+.modalFrame h2 ,
+.modalFrame > p{     
+    text-align: center
+}
+.modalFrame form p{
+    margin: 20px auto;
+    font-weight: bold;
+}
+.modalFrame form label{
+    color: #31AF70;
+    font-size: 1.2em;
+}
+.modalFrame input{
+    border: 1px #ddd solid;
+}
+.modalFrame [type=submit]{
+    border: none;
+    background: #0066ff;
+    color: #fff;
+    padding: 10px 50px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer; 
+    transition: all .8s ease;
+}
+.modalFrame [value=Cancelar]{
+    float: right;
+    background: #F0F0F0 !important;
+    border: 1px #ddd solid !important;
+    color: #555 !important;
+    /*//box-shadow: 1px 1px 3px 0 #999;*/
+}
+
+form > p{
+    width: 80%;
+}

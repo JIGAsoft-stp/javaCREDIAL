@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Simulação</title>
+        <h:outputStylesheet library="Styles" name="credialCss.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+    </h:head>
+    <h:body id="pagina_Simulacao">
+        
+        <ui:include src=" Includes/menu.xhtml"/>
+       
+        <h:form id="regform">
+            <div class="modalPage statusSimulacao" style="align-content: center" align="center">
+                <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess"/>
+            </div>
+        <div class="dialgs">
+           
+            <p:dialog visible="false" modal="true" width="700" height="250" widgetVar="dlg">
+                <p:dataTable value="#{regSimulacao.listaTaxa}" var="taLis" id="simulaTaxa" class="tableD"
+                             scrollable="true" scrollHeight="200"
+                             rowKey="#{taLis}" selectionMode="single">
+                               <p:column headerText="Taxa">
+                                   <h:outputLabel value="#{taLis.taxa}"/>
+                               </p:column >
+                               <p:column headerText="Periodo">
+                                   <h:outputLabel value="#{taLis.dias}"/>
+                               </p:column>
+                               <p:column headerText="Data Início">
+                                   <h:outputLabel value="#{taLis.de}"/>
+                               </p:column>
+                               <p:column headerText="Data Fim">
+                                   <h:outputLabel value="#{taLis.a}"/>
+                               </p:column>
+                </p:dataTable>  
+                
+            </p:dialog>
+<!--            <p:dialog visible="false" modal="true" width="325"  height="155" position="800,150"
+                      widgetVar="dlgCredito" header="Prestação" minHeight="155" minWidth="325">-->
+            <div class="modalPage dlgCredito" >
+                <div class="modalFrame modalFrameCredito" >
+                    <h:panelGrid id="RegPagemntoDado" columns="2" cellspacing="5">
+                        <h:outputLabel value="Nº Documento"/>
+                        <h:inputText value="#{regSimulacao.tabelaSimulacaoEdtite.nundocumento}" style="
+                                     padding: 4px 5px; border-color: #000; border: 1px #ddd solid; background: white;" />
+                         <h:outputLabel value="Banco"/>
+                         <h:selectOneMenu value="#{regSimulacao.tabelaSimulacaoEdtite.banco}">  
+                             <f:selectItems value="#{regSimulacao.listaTodosBanco}" var="plb" itemLabel="#{plb.value}" itemValue="#{plb.toString}"/>
+                         </h:selectOneMenu> 
+                         <h:outputLabel value="Tipo de pagamento"/>
+                         <h:selectOneMenu value="#{regSimulacao.tabelaSimulacaoEdtite.tipoPagamento}">  
+                             <f:selectItems value="#{regSimulacao.listaModalidadePagamento}" var="pltp" itemLabel="#{pltp.value}" itemValue="#{pltp.toString}"/>
+                         </h:selectOneMenu>              
+                    </h:panelGrid>
+                       
+                    <h:panelGrid columns="2" style="margin-left: 90px;">
+                    <h:commandButton type="button" value="Fechar" class="btDlg"  onclick="$('.dlgCredito').hide();">
+                              <f:ajax render="@none" execute="@none"/>
+                          </h:commandButton>  
+                          <h:commandButton type="button" value="Validar" class="btDlgV" action="#{regSimulacao.altararLinhaSelecionada()}">
+                              <f:ajax render="@form tableSss" execute="@form"/>
+                          </h:commandButton>
+                    </h:panelGrid>
+                   </div>
+            </div>
+            <!--</p:dialog>-->
+        </div>
+        <div class="geral">
+            <p:growl id="RegGrowl" showDetail="true" sticky="true"/>
+<!--<<<<<<< .mine-->
+            <h:commandButton value="Adicionar" type="button" class="btadd">
+                <p:ajax process="@form" />
+            </h:commandButton>
+            <h:commandButton value="Selecionar Cliente" type="reset" class="btcliente">
+                <p:ajax process="@form" event="click" listener="#{regSimulacao.Cliente('dd')}" />
+            </h:commandButton>
+            <!--<br></br>-->
+            <!--<div style=" border-bottom: 2px solid #000; margin-top: 10px;"></div>-->
+<!--=======
+            <h:commandButton value="Selecionar Cliente" class="btcliente" action="{regSimulacao.Cliente('dd')}"/>
+            <h:commandButton value="Adicionar" class="btadd"/>
+>>>>>>> .r703-->
+            <div class="corpo">
+               
+                <div class="left">
+                    <div class="ClientDiv">
+                        <div >
+                            <h:outputLabel value="Valor Simulação" />
+                            <h:inputText value="#{regSimulacao.simulacao.valorSimulacao}" />
+                        </div>
+                        <div style="width: 60%;">
+<!--                        <div>
+                                 <h:commandLink onclick="PF('dlg').show()" value="Ver taxa" style="font-size: 10px;">
+                                     <p:ajax update="simulaTaxa" process="@form" listener="{regSimulacao.taxaCreditoSelecionado()}" />
+                                 </h:commandLink>
+                            </div>-->
+                            <h:outputLabel value="Tipo de credito" style="margin-right: 15px;"/>
+                            <h:selectOneMenu value="#{regSimulacao.simulacao.tipoCredeito}" class="slet">
+                                <f:selectItems value="#{regSimulacao.listaCredito}" itemLabel="#{ff.value}" var="ff" itemValue="#{ff.id}" class="sel"/>
+                            </h:selectOneMenu>   
+                        </div>
+                        <div style="width: 15%;">
+                            <h:outputLabel value="Dias" />
+                            <h:inputText value="#{regSimulacao.simulacao.dias}"/>
+                        </div>
+                        <div >
+                            <h:outputLabel for="dddd" value="Data Credito"/>
+                            <p:calendar id="dddd" pattern="yyyy-MM-dd" navigator="true" readonlyInput="true" style="font-size: 12px"
+                                        value="#{regSimulacao.simulacao.dataCredito}" 
+                                        maxdate="#{dataBean.maxDate}">
+                            </p:calendar>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <h:commandButton value="Simulação" class="BTsimulacao" action="#{regSimulacao.regSumulacao()}">
+                            <f:ajax render="@form tableSss" execute="@form"/>
+                        </h:commandButton>
+                    </div>     
+                            <div class="ClientDiv">
+                                <div>
+                                    <h:outputLabel value="Taxa"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.taxa}" disabled="true"/>
+                                     <h:outputLabel value="Taxa sem Desconto"/>
+                                     <h:inputText value="#{regSimulacao.simulacao.taxaSemDesconto}" disabled="true" />
+                                    <h:outputLabel value="Prestação"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.pestacao}" disabled="true"/>
+                                    <h:outputLabel value="Correção"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.correcao}" >
+                                        <p:ajax event="blur" update="@form" process="@form" listener="#{regSimulacao.regSumulacao()}"/>
+                                    </h:inputText>
+                                </div> 
+                                <div> 
+                                    <h:outputLabel  value="Periodo"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.periodo}" disabled="true"/>
+                                    <h:outputLabel  value="Taxa com Desconto"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.taxaComDesconto}" disabled="true"/>
+                                    <h:outputLabel value="Reembolso/Periodo"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.reembalsoPeriodo}" disabled="true" />
+                                    <center>
+                                        <h:selectOneRadio  id="opt" class="combo" value="#{regSimulacao.simulacao.opcao}">
+                                            <f:selectItem itemLabel="A" itemValue="A"/>
+                                            <f:selectItem itemLabel="B" itemValue="B"/>
+                                            <p:ajax update="@form" process="@form" listener="#{regSimulacao.regSumulacao()}"/>
+                                        </h:selectOneRadio>
+                                    </center>
+                                    
+                                </div> 
+                                <div> 
+                                    <h:outputLabel value="Capital"/>
+                                    <h:inputText value="#{regSimulacao.simulacao.capital}" disabled="true"/>
+                                     <h:outputLabel value="Desconto %(0% e 20%)"/>
+                                     <h:inputText id="desc" value="#{regSimulacao.simulacao.desconto}">
+                                         <p:ajax update="@form" process="@form" event="blur" listener="#{regSimulacao.regSumulacao()}"/>
+                                     </h:inputText>
+
+                                    <h:outputLabel value="Seguro"/>
+                                    <h:inputText disabled="true" value="#{regSimulacao.simulacao.seguro}"/>
+                                    <h:outputLabel value="Total a pagar"/>
+                                    <h:inputText  id="tpagar" disabled="true" value="#{regSimulacao.simulacao.totalPagar}"/>
+                                </div> 
+                       </div> 
+                       
+                </div>
+                <div class="right">
+                    <p:dataTable selectionMode="single" rowKey="#{tss.dataT}" selection="#{regSimulacao.selectTabelaSimulacao}"
+                                 value="#{regSimulacao.tabelaSimulacao}" var="tss" id="tableSss" pt:border="0" class="table" pt:cellpadding="5"
+                                 scrollable="true" scrollHeight="400">
+                        <p:column headerText="Data"><h:outputLabel value="#{tss.dataT}"/> </p:column> 
+                        <p:column headerText="Reebolso"><h:outputLabel value="#{tss.reebolso}"/></p:column>
+                        <p:column headerText="Cap.Restaste"><h:outputLabel value="#{tss.capitaRe}"/></p:column>
+                        <p:column headerText="Nº Doc"><h:outputLabel title="#{tss.nundocumento}" value="#{tss.nundocumento}"/></p:column>
+                        <p:column headerText="Tipo Pag."><h:outputLabel value="#{tss.tipoPagamento}"/></p:column>
+                        <p:column headerText="Banco"><h:outputLabel value="#{tss.banco}"/></p:column>
+                        <p:ajax event="rowDblselect" oncomplete="$('.dlgCredito').show()" listener="#{regSimulacao.trsnsSelected()}" update="@form"/>
+                    </p:dataTable>
+                    
+                </div>
+          </div>
+            <h3 class="label">Informações do Cliente</h3>
+         <div class="button">
+            
+            
+            <div class="ClientDiv">
+                <div class="Div1">
+                        <h:inputText pt:placeholder="Nº Dossier" readonly="true" class="text" title="Nº Dossier" value="#{regSimulacao.numeroDossier}"/>
+                        <h:outputLabel value="Modalidade de pagamento" class="lab"/>
+                        <h:selectOneMenu value="#{regSimulacao.fonteRedimento}" >
+                            <f:selectItems value="#{regSimulacao.listaGatantia}" var="lfr" itemLabel="#{lfr.value}" itemValue="#{lfr.id}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Fonte de rendimento" class="lab"/>
+                        <h:selectOneMenu value="#{regSimulacao.modalidadePagamento}">
+                            <f:selectItems value="#{regSimulacao.listaModalidadePagamento}" var="MMM" itemLabel="#{MMM.value}" itemValue="#{MMM.id}"/>
+                        </h:selectOneMenu>
+                </div>
+                
+                <div class="Div2">
+                        <h:inputText pt:placeholder="NIF" class="textN" readonly="true" title="NIF" value="#{regSimulacao.nif}"/>
+                        <h:outputLabel value="Banco" class="lab"/>
+                        <h:selectOneMenu value="#{regSimulacao.bancoCredito}" class="select1" >
+                            <f:selectItems value="#{regSimulacao.listaUserBanco}" var="lb" itemLabel="#{lb.value}" itemValue="#{lb.toString}"/>
+                            <f:ajax event="change" render="@form" execute="@form" listener="#{regSimulacao.CarregarChequeBanco('ddd')}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Nº Doc para pagar credito" class="lab"/>
+                        <h:inputText readonly="false" class="text2 soNum" value="#{regSimulacao.sequenciaCheque}" onkeyup="soNumero()" >
+                            <p:ajax event="change" update="@this labelForNumCheque" process="@this" listener="#{regSimulacao.validarNumCheque()}" />
+                        </h:inputText>
+                </div>
+                
+                <div class="Div3">
+                        <h:inputText pt:placeholder="Nome" readonly="true" class="text2" title="Nome" value="#{regSimulacao.nome}"/>
+                        <h:outputLabel value="Garantia" class="lab"/>
+                        <div class="ClientDiv">
+                            <h:selectOneMenu id="listaGara" class="selectDoc" value="#{regSimulacao.garrantia.value}" >
+                            <f:selectItems value="#{regSimulacao.listaGatantia}" var="lg" itemLabel="#{lg.value}" itemValue="#{lg.toString}"/>
+                            </h:selectOneMenu> 
+                        </div>
+                        <div class="ClientDiv">
+                            <h:inputText pt:placeholder="Descrição" id="desGara" value="#{regSimulacao.garrantia.descricao}"></h:inputText>
+                            <h:commandButton value="Adicionar" class="BT" action="#{regSimulacao.addRegGarrantia()}">
+                                <f:ajax execute="listaGara desGara" render="listaGara listaGaraAdd desGara"/>
+                            </h:commandButton>
+                        </div>
+                        <h:selectOneListbox id="listaGaraAdd" value="#{regSimulacao.removeGarrantia}" class="textA">
+                            <f:selectItems value="#{regSimulacao.addGarrantia}" var="dgg" itemLabel="#{dgg.value}" itemValue="#{dgg.toString}"/>
+                            <f:ajax event="dblclick" render="@this" execute="@this" listener="#{regSimulacao.removeSelectGarrantia()}"/>
+                            <f:ajax render="@this desGara" execute="@this" event="click" listener="#{regSimulacao.selecedObj(true)}"/>
+                        </h:selectOneListbox>
+                </div>
+                <div class="Div4">
+                    <h:inputText pt:placeholder="Apelido" readonly="true" class="text2" title="Apelido" value="#{regSimulacao.apelido}"/>
+                    <h:outputLabel value="Documentos" class="lab"/>
+                    <div class="ClientDiv">
+                        <h:selectOneMenu id="listaDoc" class="selectDoc" value="#{regSimulacao.documento.value}">
+                            <f:selectItems value="#{regSimulacao.listaDocumentos}" var="ddadd" itemLabel="#{ddadd.value}" itemValue="#{ddadd.toString}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="ClientDiv">
+                        <h:inputText pt:placeholder="Descrição" id="descCoc" value="#{regSimulacao.documento.descricao}"></h:inputText>
+                        <h:commandButton value="Adicionar" class="BT" action="#{regSimulacao.addRegDocumento()}">
+                            <f:ajax execute="listaDoc descCoc" render="listaDoc listaDocAdd descCoc"/>
+                        </h:commandButton>
+                    </div>  
+                    <h:selectOneListbox  id="listaDocAdd" class="textA" value="#{regSimulacao.removedocumento}">
+                        <f:selectItems value="#{regSimulacao.addDocumento}" var="aaa" itemLabel="#{aaa.value}" itemValue="#{aaa.toString}"/>
+                        <p:ajax event="dblclick" update="@this" listener="#{regSimulacao.removeSelectDocumento()}"/>
+                        <p:ajax update="descCoc"  process="@this" event="click" listener="#{regSimulacao.selecedObj(false)}"/>
+                    </h:selectOneListbox>   
+                        
+                </div>
+            </div>
+                <h:outputLabel value="#{regSimulacao.sequenciaCheque}" id="labelForNumCheque" />   
+        </div>
+<!--<<<<<<< .mine
+            
+            <div class="flex">
+=======-->
+            <div class="flex" align="center">
+<!-->>>>>>> .r703-->
+                <h:outputLabel class="RegEstadoP" style="display: none" id="regImp" value="#{regSimulacao.botonImprortar}"/>
+                <h:commandButton value="Importar Simulação" styleClass="BTsimulacao" action="#{regSimulacao.Validacao(null)}" style="width: 30%;">
+                    <p:ajax immediate="true" update="@form RegGrowl regImp" onstart="$('.statusSimulacao').show()" oncomplete="RegTeste();$('.statusSimulacao').hide()"/>
+                </h:commandButton>
+            </div>
+            
+        </div>
+            
+             <div class="modalPage regCd">
+                <div class="modalFrame modalFrame0" align="center">
+                    <br/>
+                    <br><label style="font: 15px sans-serif; font-weight: bold;">Importar Simulação?</label></br>
+                    <h:commandButton style="padding: 5px 5px;" value="Sim" type="submit" styleClass="ui-confirmdialog-yes"  action="#{regSimulacao.ImportaSimulacao(null)}">
+                         <p:ajax update="regMensagem" oncomplete="importarSimulacao();"/>
+                    </h:commandButton>
+                
+                    <h:commandButton style="padding: 5px 5px;" value="Não" type="submit" styleClass="ui-confirmdialog-no" >
+                        <p:ajax oncomplete="$('.regCd').hide()" />
+                    </h:commandButton>
+                </div>
+             </div>
+            <div class="modalPage regConcluir">
+                <div class="modalFrame modalFrameMensagem" align="center">
+                    <h:outputText style="padding-top: 25px; font-size: 17px; font-weight: bold;" id="regMensagem" class="regMensagem"  value="#{regSimulacao.mensagem}" /><br/>
+                    <h:outputText style="padding-top: 15px; font-size: 15px; font-weight: normal;" id="regMensagem2"  value="#{regSimulacao.mensagem2}" /><br/>
+                    <h:outputText style="padding-top: 15px; font-size: 15px; font-weight: normal;" id="regMensagem3"  value="#{regSimulacao.mensagem3}" /><br/>
+                    <h:outputText style="padding-top: 15px; padding-bottom: 30px;  font-size: 15px; font-weight: normal;" id="regMensagem4"  value="#{regSimulacao.mensagem4}" /><br/>
+                    <h:commandButton style="padding: 5px 5px;" class="sairButon" value="Sair" type="submit" styleClass="ui-confirmdialog-yes">
+                        <p:ajax update="@none" onstart="$('.regConcluir').hide();$('.statusSimulacao').show()" oncomplete="$('.statusSimulacao').hide();sair()" process="@none" />
+                    </h:commandButton>
+                </div>
+             </div>
+</h:form>
+        <script type="text/javascript">
+             function RegTeste()
+             {
+                 var valor = $(".RegEstadoP").html(); 
+                 if(valor==='true')
+                 {
+                    $('.regCd').show();
+                 }
+             }
+             function importarSimulacao()
+             {
+                 $('.regCd').hide();
+                 $('.regConcluir').show();
+                 if($(".regMensagem").html()!=="Erro a Importar simulação!")
+                 {
+                     $(".sairButon").val("Importar");
+                 }
+                 else
+                 {
+                     $(".sairButon").val("Sair");
+                 }
+             }
+             function soNumero()
+             {
+                var expre = /[^0-9]/g;
+                var i =0;
+                // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
+                if ($(".soNum").val().match(expre))
+                {$(".soNum").val($(".soNum").val().replace(expre,''));}
+             }
+             function sair()
+             {
+                if($(".regMensagem").html()!=="Erro a Importar simulação!")
+                {
+                    window.location.assign("R.ClienteTest.xhtml");
+                }
+                else
+                {
+                    $('.regCd').show();
+                }
+             }
+//             $('datatable tr').click(function(){
+//                 alert('olaaaaaaaaaa');
+////                 $(this).addClass('select');
+//             });
+        </script>
+    </h:body>
+</html>
+

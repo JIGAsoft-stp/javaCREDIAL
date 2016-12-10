@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+         <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    <h:body>
+       <ui:include src="Includes/menu.xhtml"></ui:include> 
+       <div align="center" style="padding-bottom: 20%; padding-top: 20%;">
+           <label class="divlabel">Erro a efetuar operação</label><br/>
+           <label class="divlabel">Recarregue a pagina</label><br/>
+       </div>
+       <style>
+          .divlabel{
+               font: 30px sans-serif;
+               font-weight: bold;
+               color: red;
+           }
+       </style>
+    </h:body>
+</html>
+

@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"     
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="queryOne.js" />
+    </h:head>
+    
+        <h:form id="modalPagamento">
+            <div class="addPgtoBody">
+            <h:outputLabel id="pagamentoEfetuado" class="PEfetuado" value="#{pagamento.pagamento.efetuado}" style="display: none;" /> 
+            <p:growl id="info" sticky="false" showDetail="true" life="10000"   />
+            <h3>Pagamento</h3>        
+            <div class="pgtoS1">                        
+                <h4>Fonte de pagamento</h4> 
+                <p>
+                <h:selectOneRadio class="radioPgto pagamentoFonte" value="#{pagamento.pagamento.fontePagamento}" id="fonteP" >
+                    <f:selectItem itemValue="S" itemLabel="Semelhante" id="same" />
+                    <f:selectItem itemValue="D" itemLabel="Diferente" class="marg" id="diferent"/>
+                    <f:ajax execute="@this" listener="#{pagamento.alterarEstadoCampo()}"  
+                        render="numeroDoc Pbanco pTipo tipoP valorRestante valorPagar Pdata Pdesconto" />
+                </h:selectOneRadio>   
+                </p>
+                <p>
+                    <label>Nº Documento </label> 
+                    <h:inputText class="disa pagamentoDoc" id="numeroDoc"  value="#{pagamento.pagamento.numeroDoc}" 
+                     disabled="#{pagamento.ativarDesativarNumeroDoc}" />
+                </p>
+                <p>
+                <label>Banco</label>
+                <h:selectOneMenu class="disa pagamentoBanco" value="#{pagamento.pagamento.banco}" id="Pbanco" disabled="#{pagamento.ativarDesativarBanco}">
+                    <f:selectItems value="#{pagamento.bancos}" var="banco" itemValue="#{banco.id}" itemLabel="#{banco.value}"/>
+                </h:selectOneMenu>
+                </p>
+            </div>
+            <div class="pgtoS2">
+                <h4>Tipo de pagamento</h4>
+                <h:outputLabel class="Pradio" style="display: none;" value="#{pagamento.tipo}" id="pTipo" />
+                <p>
+                    <h:selectOneRadio class="radioPgto pagamentoTipo" value="#{pagamento.pagamento.tipoP}" disabled="#{pagamento.ativarDesativarTipoPagamento}" id="tipoP">
+                        <f:selectItem itemValue="F" itemLabel="Faseado" />
+                        <f:ajax execute="@this fonteP" listener="#{pagamento.alterarEstadoCampo()}" 
+                             render="pTipo Pdata Pdesconto valorPagar valorRestante " />
+                    </h:selectOneRadio>
+                </p>
+                <p>Data 
+                    <p:calendar class="pagamentoData" 
+                        value="#{pagamento.pagamento.data}" 
+                        pattern="dd-MM-yyyy"
+                        navigator="true"
+                         readonlyInput="true"
+                        disabled="#{pagamento.ativarDesativarData}"
+                        id="Pdata"  >
+                        <!--mindate="dataBean.maxDate"-->
+                    </p:calendar> 
+                </p> 
+                <p>
+                    <h:selectManyCheckbox class="mmm" value="#{pagamento.pagamento.desconto}" disabled="#{pagamento.ativarDesativarDesconto}" id="Pdesconto">
+                        <f:selectItem itemValue="Desconto" itemLabel="Desconto"/> 
+                    </h:selectManyCheckbox>  
+                </p>
+            </div>
+            <div class="montant">
+                <h4>Montante</h4>
+                <p>
+                    <label>Valor a pagar</label> 
+                    <h:inputText  value="#{pagamento.pagamento.montantePagar}" class="pagamentoNumero pagamentoPagar" 
+                        disabled="#{pagamento.ativarDesativarMontantePagar}" id="valorPagar">
+                        <f:ajax execute="@this" 
+                            event="keyup" 
+                            listener="#{pagamento.calcularValorRestante()}"
+                            render="@this valorRestante" rendered="#{pagamento.valor!=0}" />
+                    </h:inputText>
+                </p>
+                <p>
+                    <label class="mgRight">Restante</label>
+                    <h:inputText value="#{pagamento.pagamento.montanteRestante}" class="pagamentoNumero pagamentoR"  disabled="true" id="valorRestante"/>
+                </p>
+            </div>
+            <section>
+                <h:commandButton value="Cancelar" class="cancel" action="#{pagamento.cancelar()}">
+                    <p:ajax process="@this" oncomplete="fechar()"/>
+                </h:commandButton>
+                <h:commandButton value="Guardar"  id="botaoGuardar"  action="#{pagamento.verificarFontePagamento()}" 
+                                 class="pagamentoBotao" >
+                    <f:ajax execute="modalPagamento"  />
+                </h:commandButton>
+            </section>
+        </div>
+    </h:form>
+    
+    <style>
+        .addPgtoBody{
+            color: #333;
+            width: 100%;
+            
+        }
+        .addPgtoBody h3{
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px #ddd solid;
+            width: 100%;
+        }
+        
+        .addPgtoBody {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            
+        }
+        .addPgtoBody .pgtoS1{
+            width: 55%;
+        }
+        .addPgtoBody .pgtoS2{
+            width: 40%;
+        }
+        .addPgtoBody h4{
+            color: #333;
+            width: 100%;
+            font-size: .9em;
+            border-bottom: 1px #ddd solid;
+        }
+        .radioPgto,
+        .addPgtoBody label,
+        .addPgtoBody p{
+            font-size: .95em;
+            
+        }
+        .addPgtoBody .radioPgto{
+            width: 100%;
+        }
+        .addPgtoBody p{
+            margin: 10px 0;
+        }
+        .addPgtoBody p > label{
+            display: inline-block;
+            width: 100%;
+            
+        }
+        .addPgtoBody p > input,
+        .addPgtoBody p > select,
+        .addPgtoBody .pagamentoData{
+            width: 100%;
+            margin: 0 !important;
+        }
+        .addPgtoBody .montant{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: space-between;
+        }
+        .addPgtoBody .montant p{
+            width: 48%;
+        }
+        .addPgtoBody > section{
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .addPgtoBody > section > input{
+            width: 20% !important;
+            padding: 7px 0 !important;
+            margin: 10px 0 0 10px!important;
+            
+        }
+        .addPgtoBody > section .cancel{
+            background: #eee !important;
+            border: 1px #ccc solid !important;
+            color: #444 !important;
+            
+        }
+    </style>
+    <script type="text/javascript">
+        function fechar()
+        {
+            $("#modalPage").hide($("#modalPage").fadeOut(900));  
+        }
+        
+    </script>
+</html>
+

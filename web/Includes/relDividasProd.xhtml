@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+         <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+         <h:outputScript library="JQuery" name="ajaxLoading.js" />
+         <h:outputScript library="JQuery" name="formCliente.js" />
+         <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+    </h:head>
+    
+    <h:body id="pagina_Relatorio">
+        <h:form id="relatorioDividaProduto">
+            <section id="seccao1" class="sec1" >
+                <div class="divFlex">
+                    <section>
+                        <h:outputLabel value="Data Inicio"/>
+                        <p:calendar style="width: 93%;" pattern="dd-MM-yyyy" navigator="true" id="dataInicialDividaP"
+                             value="#{relatorioBean.relatorio.dataInicial}" >
+                             <p:ajax event="dateSelect"  
+                                      onstart="mostrarRelDividaProduto()"
+                                      oncomplete="fecharProcessamento()"
+                                     process="@this dataFinalDividaP localTrabalhoDividaProduto tipoCreditoDividaProduto relatorioPagencia"
+                                     listener="#{relatorioBean.relatorioDividaProduto()}" />
+                         </p:calendar>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Data Fim"/>
+                        <p:calendar style="width: 93%;" pattern="dd-MM-yyyy" navigator="true" id="dataFinalDividaP"
+                                    value="#{relatorioBean.relatorio.dataFinal}" >
+                            <p:ajax event="dateSelect"  
+                                     onstart="mostrarRelDividaProduto()"
+                                     oncomplete="fecharProcessamento()"
+                                    process="@this dataInicialDividaP localTrabalhoDividaProduto tipoCreditoDividaProduto relatorioPagencia" 
+                                    listener="#{relatorioBean.relatorioDividaProduto()}"/>
+                         </p:calendar>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Local trabalho"/>
+                        <h:selectOneMenu class="selet localTdividaP" value="#{relatorioBean.relatorio.localTrabalho}" id="localTrabalhoDividaProduto">
+                            <f:selectItem itemLabel="(Selecione)" />
+                            <f:selectItems value="#{relatorioBean.listaLocalTrabalho}" var="local" itemLabel="#{local.value}" itemValue="#{local.id}"/>
+                            <p:ajax event="change" 
+                                      onstart="mostrarRelDividaProduto()"
+                                      oncomplete="fecharProcessamento()"
+                                    process="dataInicialDividaP dataFinalDividaP localTrabalhoDividaProduto tipoCreditoDividaProduto relatorioPagencia"
+                                    listener="#{relatorioBean.relatorioDividaProduto()}" />
+                        </h:selectOneMenu>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Tipo Credito"/>
+                        <h:selectOneMenu class="selet tipoCDividaP" value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCreditoDividaProduto">
+                            <f:selectItem itemLabel="(Selecione)" />
+                            <f:selectItems value="#{relatorioBean.tipoCredito}" var="tipoC" itemLabel="#{tipoC.value}" itemValue="#{tipoC.id}"/>
+                             <p:ajax event="change"  
+                                      onstart="mostrarRelDividaProduto()"
+                                      oncomplete="fecharProcessamento()"
+                                     process="dataInicialDividaP dataFinalDividaP localTrabalhoDividaProduto tipoCreditoDividaProduto relatorioPagencia"
+                                    listener="#{relatorioBean.relatorioDividaProduto()}"  />
+                        </h:selectOneMenu>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Agência" />
+                        <h:selectOneMenu class="select"  value="#{relatorioBean.relatorio.agencia}" id="relatorioPagencia">
+                             <f:selectItems value="#{relatorioBean.agencias}"
+                                   var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                              <p:ajax event="change"  
+                                      onstart="mostrarRelDividaProduto()"
+                                      oncomplete="fecharProcessamento()"
+                                     process="dataInicialDividaP dataFinalDividaP localTrabalhoDividaProduto tipoCreditoDividaProduto relatorioPagencia"
+                                    listener="#{relatorioBean.relatorioDividaProduto()}"  />
+                        </h:selectOneMenu>
+                    </section>
+
+                </div>
+                <p:dataTable value="#{relatorioBean.listaDividaProduto}" var="dividaP" id="tabelaDividaProduto" scrollHeight="350" scrollable="true"
+                             emptyMessage="Nenhum registro encontrado">
+                    <p:column headerText="NIF" sortBy="#{dividaP.nif}">
+                        <h:outputText value="${dividaP.nif}" />
+                    </p:column>
+                    <p:column headerText="Nome"  sortBy="#{dividaP.nome}">
+                        <h:outputText value="${dividaP.nome}" />
+                    </p:column>
+                    <p:column headerText="Crédito Solicitado"  sortBy="#{dividaP.creditoSolicitado}">
+                        <h:outputText value="${dividaP.creditoSolicitado}" />
+                    </p:column>
+                    <p:column headerText="Montante total crédito"  sortBy="#{dividaP.totalCredito}">
+                        <h:outputText value="${dividaP.totalCredito}" />
+                    </p:column>
+                    <p:column headerText="Valor pago"  sortBy="#{dividaP.valorPago}">
+                        <h:outputText value="${dividaP.valorPago}" />
+                    </p:column>
+                </p:dataTable><br/>
+                <h:outputLabel value="Total crédito concedido:" class="total"/><h:outputLabel id="totalValorCreditoProduto" value="#{relatorioBean.totalCreditoCapital}" style="font-size: 12px;" />
+                <h:outputLabel value="Total montante dívida:"  class="total"/><h:outputLabel id="totalMontanteDividaProduto" value="#{relatorioBean.totalDividaCapital}" style="font-size: 12px;"/>
+                <h:outputLabel value="Total valor pago:"  class="total"/><h:outputLabel id="totalValorPagoProduto"  value="#{relatorioBean.totalTaegCapital}" style="font-size: 12px;"/>
+            </section>  
+            <div class="modalPage modalImage">
+                <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+          </div>
+        </h:form>
+    </h:body>
+    <style>
+        div{
+            width: 100%;
+        }
+        .divFlex{
+            display: flex; 
+        }
+        section{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</html>
+
+

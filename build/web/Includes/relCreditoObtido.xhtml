@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+           <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+           <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+          <h:outputScript library="JQuery" name="Transferencia.js" />
+          <h:outputScript library="JQuery" name="ajaxLoading.js" />
+          <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+           <h:outputScript library="JQuery" name="formCliente.js" />
+           <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+    </h:head>
+    <h:body class="bodyRQO">
+        <h:form id="QCredito">  
+              <div class="modalPage modalImage">
+                     <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+               </div>
+            
+            <div class="divC">
+                <h:panelGrid class="panelG panelG2">
+                    <h:selectOneRadio class="panelSelect" layout="pageDirection" value="#{relatorioBean.relatorio.parametro}" id="parametro"> 
+                        <f:selectItem itemLabel="Sem Parametros" itemValue="SP"/>  
+                        <f:selectItem itemLabel="Com Parametros" itemValue="CP"/>  
+                        <f:ajax listener="#{relatorioBean.limpar(null)}"/>
+                    </h:selectOneRadio>
+                </h:panelGrid>
+                <h:panelGrid columns="2" class="panelG">
+                    <h:outputLabel value="Data Inicio Total credito"/>
+                    <p:calendar 
+                        value="#{relatorioBean.relatorio.dataInicial}"
+                        id="dataIQ"
+                        navigator="true"
+                        pattern="dd-MM-yyyy">
+                        <p:ajax  process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido"
+                                event="dateSelect"  
+                                 onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.CarregarQuantidadeCredito(null)}" />
+                    </p:calendar>
+                    <h:outputLabel value="Data Fim Total credito"/>
+                    <p:calendar 
+                        navigator="true"
+                        pattern="dd-MM-yyyy"
+                        value="#{relatorioBean.relatorio.dataFinal}" 
+                        id="dataFINAL">
+                        <p:ajax   process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido"
+                                 event="dateSelect" 
+                                   onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                 listener="#{relatorioBean.CarregarQuantidadeCredito(null)}" />
+                    </p:calendar>
+                </h:panelGrid> 
+                <h:panelGrid columns="2"  class="panelG">
+                    <h:outputLabel value="Local de trabalho" />
+                    <h:selectOneMenu class="select localTCredito" style="width: 150px;" value="#{relatorioBean.relatorio.localTrabalho}" id="localT">
+                        <f:selectItem itemLabel="(Selecione)" />
+                        <f:selectItems value="#{relatorioBean.listaLocalTrabalho}" var="local" itemLabel="#{local.value}" itemValue="#{local.id}"/>
+                        <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido">
+                        </p:ajax>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Localidade"/>
+                    <h:selectOneMenu class="select localidadeCredito" style="width: 150px;" value="#{relatorioBean.relatorio.localidade}" id="localLidade">
+                          <f:selectItem itemLabel="(Selecione)" />
+                        <f:selectItems value="#{relatorioBean.listaLocalidade}" var="localidade" itemValue="#{localidade.id}" itemLabel="#{localidade.value}"/>
+                        <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido">
+                        </p:ajax>
+                    </h:selectOneMenu>                
+                </h:panelGrid>
+  
+            </div>
+            <div class="areaAgencia" style="width: 50%" >
+                <h:outputLabel  value="Agência"/>
+                <h:selectOneMenu class="selet" value="#{relatorioBean.relatorio.agencia}" id="agenciaCreditoObtido">
+                    <f:selectItems value="#{relatorioBean.agencias}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                     <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido">
+                     </p:ajax>
+                </h:selectOneMenu>
+                 <h:outputLabel  value="Tipo Credito"/>
+                 <h:selectOneMenu class="selet" value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCreditoCreditoObtido">
+                    <f:selectItems value="#{relatorioBean.tipoCredito}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                     <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataIQ dataFINAL localLidade localT parametro agenciaCreditoObtido tipoCreditoCreditoObtido">
+                     </p:ajax>
+                </h:selectOneMenu>  
+            </div>
+            <br></br>
+            <p:dataTable value="#{relatorioBean.info}" var="info" scrollable="true" scrollHeight="450"
+                         selection="single" rowKey="#{info.nif}" id="tabelaQ" emptyMessage="Nenhum registro encontrado">
+                <p:column headerText="NIF" sortBy="#{info.nif}">
+                    <h:outputText value="#{info.nif}"/>
+                </p:column>
+                <p:column headerText="Nome" sortBy="#{info.nome}">
+                    <h:outputText value="#{info.nome}"/>
+                </p:column>
+                <p:column headerText="Apelido" sortBy="#{info.apelido}">
+                    <h:outputText value="#{info.apelido}"/>
+                </p:column>
+                <p:column headerText="Qt credito" sortBy="#{info.valorCredito}">
+                    <h:outputText value="#{info.valorCredito}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <h:outputLabel value="Total:"  class="total" style="margin-left: 910px;"/> <h:outputLabel id="totalRelatorioCreditoObtido" value="#{relatorioBean.total}" style="font-size: 12px;"/>
+        </h:form>
+    </h:body>
+    <style>
+        body{
+            font-family: arial, sans-serif;
+        }
+        .bodyRQO label{
+            font-size: .9em;
+        }
+        .bodyRQO .panelG{
+            margin: 0 1%;
+            display: flex;
+        }
+        .bodyRQO [type=radio]{
+            margin-top: 18px;
+        }
+        .divC{
+            margin: 2px auto;
+            width: 100%;
+            display: flex;
+        }
+        .areaAgencia{
+            width: 33%;
+            display: flex;
+            
+        }
+        .areaAgencia label{
+            margin: 0 20px;
+        }
+    </style>
+</html>
+

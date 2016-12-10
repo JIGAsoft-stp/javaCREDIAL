@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Administração</title>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputStylesheet library="Styles" name="AdministratorCSS.css"></h:outputStylesheet>
+    </h:head>
+    <h:body id="pagina_Administracao">
+
+        <ui:include src="Includes/menu.xhtml"></ui:include>     
+            <div class="WhitePart">
+                <div class="menuInsideAdm">
+                    <a href="#section1Adm">Entidades</a>
+                    <a href="#section2Adm">Taxa &amp; Seguros</a>
+                    <a href="#section3Adm">Banco &amp; Cheque</a>
+                    <a href="#section4Adm">Utilizador</a>
+                    <a href="#section5Adm">Feedback</a>
+                </div>
+                <div class="ContentsOfMenu">
+                    <div id="#section1Adm" class="ContentsItems item1">
+                        <h2>Entidades</h2>
+                        <ui:include src="Includes/AdmItem1.xhtml"></ui:include>
+                    </div>
+                    <div id="#section2Adm" class="ContentsItems item2">
+                        <h2>Taxa &amp; Seguros</h2>
+                        <ui:include src="Includes/AdmItem2.xhtml"></ui:include>
+                    </div>
+                    <div id="#section3Adm" class="ContentsItems item3">
+                        <h2>Banco &amp; Cheque</h2>
+                        <ui:include src="Includes/AdmItem3.xhtml"></ui:include>
+                    </div>
+                    <div id="#section4Adm" class="ContentsItems item4">
+                            <h2>Utilizadores</h2>
+                            <ui:include src="Includes/AdmItem4.xhtml"></ui:include>
+                    </div>
+                    <div id="#section5Adm" class="ContentsItems item4">
+                            <h2>Feedback</h2>
+                            <ui:include src="Includes/AdmItem5.xhtml"></ui:include>
+                    </div>
+                </div>
+            </div>
+    
+    </h:body>
+    <style>
+             .ui-inputfield{
+            box-shadow: none !important;
+            font: 14px sans-serif;
+            font-weight: normal !important;
+            padding: 6px !important;
+            margin-top: 1px;
+            border-radius: 3px;
+            margin-left: 2%;
+        }
+        .ui-inputfield:hover{
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .ui-inputfield:focus{
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .ui-datepicker{
+            border: 1px #4682b4 solid;
+            box-shadow: none;
+            font-size: 12px;
+        }
+        .ui-datepicker .ui-datepicker-header {
+            position: relative;
+            background: #4682b4;
+            color: white;
+            text-shadow: none;
+            font-weight: 100;
+
+        }
+        .ui-datepicker .ui-datepicker-prev,
+        .ui-datepicker .ui-datepicker-next {
+            position: absolute;
+            top: 2px;
+            width: 1.8em;
+            height: 1.8em;
+            background:white;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            var linksParent = $( '.menuInsideAdm');
+            var links = linksParent.find('a');
+            var items = $( '.ContentsItems');
+            links.eq(0).addClass( 'activeMenu');
+            items.eq(0).addClass( 'activeContent');            
+            linksParent.on('click', 'a', function(){
+                var t = $(this);
+                var i = t.index();
+                t.addClass('activeMenu').siblings().removeClass('activeMenu');                
+                items.eq(i).addClass('activeContent').siblings().removeClass('activeContent');
+                
+            });
+        });
+    </script>
+</html>
+

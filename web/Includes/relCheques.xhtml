@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="ajaxLoading.js" />
+        <h:outputScript library="JQuery" name="formCliente.js" />
+         <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+    </h:head>
+    <h:body>
+        <h:form id="relatorioCheque">
+        <div class="accord">
+            <div class="">
+            <section id="seccao1" class="sec1" >
+                <div class="divFlex">
+                    <section>
+                        <h:outputLabel value="Data Inicio"/>
+                         <p:calendar
+                        pattern="dd-MM-yyyy"
+                        navigator="true"
+                        style="width: 93%"
+                        value="#{relatorioBean.relatorio.dataInicial}"
+                        id="chequeDataInicial">
+                             <p:ajax process="@this chequeDataFinal chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                       event="dateSelect"
+                                     onstart="mostrarRelCheques()"
+                                      oncomplete="fecharProcessamento()"
+                                     listener="${relatorioBean.relatorioCheque()}"/>
+                        </p:calendar>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Data Fim"/>
+                          <p:calendar
+                              pattern="dd-MM-yyyy"
+                              navigator="true"
+                              id="chequeDataFinal"
+                              value="#{relatorioBean.relatorio.dataFinal}">
+                              <p:ajax process="@this chequeDataInicial chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                      event="dateSelect"
+                                      onstart="mostrarRelCheques()"
+                                      oncomplete="fecharProcessamento()"
+                                      listener="${relatorioBean.relatorioCheque()}"/>
+                          </p:calendar>
+                   </section>
+                   <section>
+                        <h:outputLabel value="Local trabalho"/>
+                        <h:selectOneMenu class="select localTCheque"  value="#{relatorioBean.relatorio.localTrabalho}" id="chequeLocaltrabalho">
+                            <f:selectItem itemLabel="(Selecione)"/>
+                            <f:selectItems value="${relatorioBean.listaLocalTrabalho}" var="l" itemValue="#{l.id}" itemLabel="${l.value}"/>
+                            <p:ajax process="chequeDataInicial chequeDataFinal chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                    event="change"
+                                    onstart="mostrarRelCheques()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="${relatorioBean.relatorioCheque()}"/>
+                        </h:selectOneMenu>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Banco" />
+                        <h:selectOneMenu class="select bancoCheque" value="#{relatorioBean.relatorio.banco}" id="chequeBanco" >
+                                <f:selectItem itemLabel="(Selecione)"/>
+                            <f:selectItems value="${relatorioBean.bancos}" var="l" itemValue="#{l.id}" itemLabel="${l.value}"/>
+                             <p:ajax process="chequeDataInicial chequeDataFinal chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                    event="change"
+                                    onstart="mostrarRelCheques()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="${relatorioBean.relatorioCheque()}"/>
+                        </h:selectOneMenu>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Agência" />
+                        <h:selectOneMenu class="select"  value="#{relatorioBean.relatorio.agencia}" id="agenciaRelatorioCheque">
+                                 <f:selectItems value="#{relatorioBean.agencias}"
+                                   var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                                <p:ajax process="chequeDataInicial chequeDataFinal chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                    event="change"
+                                    onstart="mostrarRelCheques()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="${relatorioBean.relatorioCheque()}"/>
+                        </h:selectOneMenu>
+                    </section>
+                    <section>
+                        <h:outputLabel value="Tipo Credito" />
+                        <h:selectOneMenu class="select"  value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCreditoRelatorioCheque">
+                            <f:selectItems value="#{relatorioBean.tipoCredito}"
+                                   var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                                <p:ajax process="chequeDataInicial chequeDataFinal chequeLocaltrabalho chequeBanco tipoCreditoRelatorioCheque agenciaRelatorioCheque"
+                                    event="change"
+                                    onstart="mostrarRelCheques()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="${relatorioBean.relatorioCheque()}"/>
+                        </h:selectOneMenu>
+                    </section>
+                </div>
+                    <br></br>
+                <p:dataTable value="#{relatorioBean.cheques}" emptyMessage=""  var="cheque" id="tabelaCheques" scrollable="true" scrollHeight="350">
+                    <p:column headerText="NIF" sortBy="#{cheque.nif}">
+                        <h:outputText value="${cheque.nif}"/>
+                    </p:column>
+                    <p:column headerText="Nome" sortBy="#{cheque.nome}">
+                        <h:outputText value="${cheque.nome}"/>
+                    </p:column>
+                    <p:column headerText="Valor Cheque" sortBy="#{cheque.valorCheque}">
+                        <h:outputText value="${cheque.valorCheque}"/>
+                    </p:column>
+                    <p:column headerText="Data de Endosse" sortBy="#{cheque.endossado}">
+                        <h:outputText value="${cheque.endossado}"/>
+                    </p:column>
+                </p:dataTable>
+                 <br/>
+                 <h:outputLabel value="Total valor cheque:" class="total" style="margin-left: 510px;"  /> <h:outputLabel id="totalValorCheque" value="#{relatorioBean.total}" style="font-size: 12px;"/>
+            </section>
+         </div>
+        </div>
+            <div class="modalPage modalImage">
+                <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+            </div>
+        </h:form>
+    </h:body>
+    
+    
+    <style>
+        div{
+            width: 100%;
+        }
+        .divFlex{
+            display: flex; 
+        }
+        section{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</html>
+

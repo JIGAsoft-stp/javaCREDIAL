@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+         <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+         <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+         <h:outputScript library="JQuery" name="ajaxLoading.js" />
+         <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    
+    <h:body>
+        <h:form id="relatorioDividaCapital"> 
+        <div>
+            <div class="divFlex">
+                <section>
+                    <h:outputLabel value="Data Inicio"/>
+                    <p:calendar value="#{relatorioBean.relatorio.dataInicial}"
+                                navigator="true" id="dataInicialDividaCapital"
+                        pattern="dd-MM-yyyy" >
+                        <p:ajax event="dateSelect" process="@this dataFinalDividaCapital periodoComparacaoCapital tipoCreditoDividaCapital agenciaCapital"
+                                  onstart="mostrarRelDividaCapital()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioDividaCapital()}" />
+                    </p:calendar>
+                </section>
+                <section>
+                    <h:outputLabel value="Data Fim"/>
+                    <p:calendar navigator="true" value="#{relatorioBean.relatorio.dataFinal}"
+                                pattern="dd-MM-yyyy" 
+                        id="dataFinalDividaCapital">
+                        <p:ajax process="@this dataInicialDividaCapital periodoComparacaoCapital tipoCreditoDividaCapital agenciaCapital" 
+                                event="dateSelect"
+                                 onstart="mostrarRelDividaCapital()"
+                                 oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.relatorioDividaCapital()}"/>
+                    </p:calendar>
+                </section>
+                <section>
+                    <h:outputLabel value="Periodo em comparação"/>
+                        <h:inputText class="txtPer periodoComp" value="#{relatorioBean.relatorio.periodoEmComparacao}"  id="periodoComparacaoCapital">
+                            <p:ajax process="dataInicialDividaCapital dataFinalDividaCapital periodoComparacaoCapital tipoCreditoDividaCapital agenciaCapital" 
+                                    event="change"
+                                     onstart="mostrarRelDividaCapital()"
+                                     oncomplete="fecharProcessamento()"
+                                    listener="#{relatorioBean.relatorioDividaCapital()}"/>
+                        </h:inputText>
+                </section>
+                <section>
+                        <h:outputLabel value="Tipo Credito"/>
+                        <h:selectOneMenu class="selet tipoCDividaP" value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCreditoDividaCapital">
+                            <f:selectItem itemLabel="(Selecione)" />
+                            <f:selectItems value="#{relatorioBean.tipoCredito}" var="tipoC" itemLabel="#{tipoC.value}" itemValue="#{tipoC.id}"/>
+                             <p:ajax event="change"  
+                                      onstart="mostrarRelDividaProduto()"
+                                      oncomplete="fecharProcessamento()"
+                                     process="dataInicialDividaCapital dataFinalDividaCapital periodoComparacaoCapital tipoCreditoDividaCapital agenciaCapital"
+                                     listener="#{relatorioBean.relatorioDividaCapital()}"  />
+                        </h:selectOneMenu>
+                </section>
+                <section>
+                         <h:outputLabel value="Agência" />
+                         <h:selectOneMenu class="select" value="#{relatorioBean.relatorio.agencia}" id="agenciaCapital">
+                               <f:selectItems value="#{relatorioBean.agencias}"
+                                   var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                                <p:ajax process="dataInicialDividaCapital dataFinalDividaCapital periodoComparacaoCapital tipoCreditoDividaCapital agenciaCapital" 
+                                    event="change"
+                                     onstart="mostrarRelDividaCapital()"
+                                     oncomplete="fecharProcessamento()"
+                                    listener="#{relatorioBean.relatorioDividaCapital()}"/>
+                         </h:selectOneMenu>
+                </section>
+            </div>    
+            <p:dataTable value="#{relatorioBean.listaDividaCapital}" emptyMessage="Nenhum registro encontrado"
+                         id="tabelaDividaCapital" var="capital" scrollHeight="350" scrollable="true">
+                <p:column headerText="NIF" sortBy="#{capital.nif}">
+                <h:outputText value="#{capital.nif}" />
+            </p:column>
+                <p:column headerText="Nome" sortBy="#{capital.nome}">
+                <h:outputText value="#{capital.nome}" />
+            </p:column>
+
+                <p:column headerText="Valor credito" sortBy="#{capital.valorCredito}">
+                <h:outputText value="#{capital.valorCredito}" />
+            </p:column>
+                <p:column headerText="Montante divida" sortBy="#{capital.montanteDivida}">
+                <h:outputText value="#{capital.montanteDivida}" />
+            </p:column>
+                <p:column headerText="Nº Dossier" sortBy="#{capital.dossier}">
+                <h:outputText value="#{capital.dossier}" />
+            </p:column>
+                <p:column headerText="TAEG" sortBy="#{capital.taeg}">
+                <h:outputText value="#{capital.taeg}" />
+            </p:column>
+                <p:column headerText="Estado" sortBy="#{capital.estado}">
+                <h:outputText value="#{capital.estado}" />
+            </p:column>
+        </p:dataTable><br/>
+        <h:outputLabel value="Total valor crédito:"  class="total"/><h:outputLabel id="totalCapitalCredito" value="#{relatorioBean.totalCreditoCapital}" style="font-size: 12px;"/>
+        <h:outputLabel value="Total montante dívida:" class="total"/><h:outputLabel id="totalMontanteCapital" value="#{relatorioBean.totalDividaCapital}" style="font-size: 12px;"/>
+        <h:outputLabel value="Total taeg:" class="total"/><h:outputLabel id="totalTaegCapital" value="#{relatorioBean.totalTaegCapital}" style="font-size: 12px;"/>
+        </div>
+                <div class="modalPage modalImage">
+                       <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+                 </div>
+        </h:form>
+    </h:body>
+    <style>
+        body{
+            font: arial, sans-serif;
+            font-size: 1.04em;
+        }
+        div{
+            width: 100%;
+        }
+        .divFlex{
+            display: flex; 
+        }
+        section{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+        .txtPer{
+            width: 6%;
+        }
+        
+    </style>
+    <script>
+        $(".periodoComp").keyup(function(e){
+        e.preventDefault();
+        var expre = /[^0-9]/g;
+        // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
+        if ($(this).val().match(expre))
+            $(this).val($(this).val().replace(expre,''));
+   });
+    </script>
+</html>
+

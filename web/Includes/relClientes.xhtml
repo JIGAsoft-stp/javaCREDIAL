@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="ajaxLoading.js" />
+        <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    
+    <h:body>
+        <h:form id="relCliente">
+            <div class="modalPage modalImage">
+                <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+            </div>
+            <h:panelGrid columns="4" class="pan">
+                <h:outputLabel value="Data Inicio Total credito"/>
+                <p:calendar
+                    pattern="dd-MM-yyyy"
+                    navigator="true"  style="width: 80%;"
+                    value="#{relatorioBean.relatorio.dataInicial}"
+                    id="dataInicial">
+                        <p:ajax event="dateSelect"  
+                            process="dataInicial dataF agenciaCliente tipoCreditoCliente" 
+                            onstart="mostrarRelCliente()"
+                            oncomplete="fecharProcessamento()"
+                            listener="#{relatorioBean.CarregarDados(null)}"
+                            update="relCliente:relatorioTabela relCliente:totalCli" />
+                </p:calendar>
+                <h:outputLabel value="Data Fim Total credito"/>
+                <p:calendar   class="d2"
+                    pattern="dd-MM-yyyy"
+                    navigator="true"
+                    value="#{relatorioBean.relatorio.dataFinal}"
+                    id="dataF">
+
+                    <p:ajax event="dateSelect" 
+                            process="dataF dataInicial agenciaCliente tipoCreditoCliente" 
+                              onstart="mostrarRelCliente()"
+                            oncomplete="fecharProcessamento()"
+                        listener="#{relatorioBean.CarregarDados(null)}" 
+                        update="relCliente:relatorioTabela relCliente:totalRelatorioCliente relCliente:totalCli" />
+                </p:calendar>
+                <h:outputLabel  value="Agência"/>
+                <h:selectOneMenu class="selet" style="width: 100%" value="#{relatorioBean.relatorio.agencia}" id="agenciaCliente">
+                    <f:selectItems value="#{relatorioBean.agencias}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                     <p:ajax event="change" listener="#{relatorioBean.CarregarDados(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataF dataInicial agenciaCliente tipoCreditoCliente">
+                     </p:ajax>
+                </h:selectOneMenu>
+                 <h:outputLabel  value="Tipo Credito"/>
+                 <h:selectOneMenu class="selet" style="width: 100%" value="#{relatorioBean.relatorio.tipoCredito}" id="tipoCreditoCliente">
+                     <f:selectItems value="#{relatorioBean.tipoCredito}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                     <p:ajax event="change" listener="#{relatorioBean.CarregarDados(null)}"
+                                  onstart="mostrarRelCreditoObtido()"
+                                  oncomplete="fecharProcessamento()"
+                                process="dataF dataInicial agenciaCliente tipoCreditoCliente">
+                     </p:ajax>
+                </h:selectOneMenu>
+            </h:panelGrid>
+            <p:dataTable value="#{relatorioBean.info}"  scrollable="true" scrollHeight="400"
+                id="relatorioTabela" selection="#{relatorioBean.relatorio}"  rowKey="#{info.nif}"
+                emptyMessage="Nenhum registro encontrado"
+                var="info">
+                <p:column headerText="NIF" sortBy="#{info.nif}" >
+                    <h:outputText value="#{info.nif}"/>
+                </p:column>
+                <p:column headerText="Nome" sortBy="#{info.nome}" style="margin-right: 500px;">
+                     <h:outputText value="#{info.nome}"/>
+                </p:column>
+                <p:column headerText="Apelido" sortBy="#{info.apelido}">
+                      <h:outputText value="#{info.apelido}"/>
+                </p:column>
+                <p:column headerText="Valor credito" sortBy="#{info.valorCredito}">
+                      <h:outputText value="#{info.valorCredito}"/>
+                </p:column>
+                <p:column headerText="Local trabalho" sortBy="#{info.localTrabalho}">
+                     <h:outputText value="#{info.localTrabalho}"/>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <h:outputLabel value="Total de clientes:" class="total" /><h:outputLabel value="#{relatorioBean.info.size()}" id="totalCli" style="font-size: 12px;" /> 
+            <h:outputLabel value="Total:" class="total" style="margin-left:520px;"/> <h:outputLabel id="totalRelatorioCliente" value="#{relatorioBean.total}" style="font-size: 12px;"/>
+            </h:form>
+    </h:body>
+    <style>
+        .pan{
+            margin: 20px auto;
+        }
+        .pan label{
+            font-weight: bold;
+            color: #444;
+        }
+   
+    </style>
+
+</html>
+

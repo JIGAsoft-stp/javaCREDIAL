@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+    </h:head>
+    <h:body>
+
+        <div class="bodyAdmItem1">
+            <c:forEach var="item" items="#{modalidadeBean.listaInfo}"> 
+                <div class="divAccordeon">
+                    <div class="headerSection">   
+                        <li  >      
+                            <h:outputLabel class="nomeModalidade#{item.id}">#{item.value}</h:outputLabel>
+                        </li>
+                        <nav>
+                            <h:form id="AddItem1_Super#{item.id}">
+                                <p:growl id="growlAdm#{item.id}" showDetail="false" life="10000"/>
+                                <h:inputText 
+                                    id="AddItem1_CaixaTexto#{item.id}"
+                                    value="#{modalidadeBean.pagamento.designacao}" 
+                                    class="modalidadeDesignacaoPagamento#{item.id}">
+                                    <p:ajax event="blur" process="@this"/>
+                                </h:inputText>
+                                <h:commandButton value="Adicionar" action="#{modalidadeBean.RegModalidadePagamento(item.id)}" id="botao#{item.id}" class="pagamento#{item.id}">
+                                    <f:ajax execute="@this" render=":addItm1_Sub3#{item.id}" />
+                                </h:commandButton>
+                            </h:form>
+                        </nav>
+                    </div>
+                    <div class="bodySection">
+                        <div>
+                            <h:form id="addItm1_Sub3#{item.id}">
+                                <c:forEach id="AddItem1_SelectOne#{item.id}" var="itemLabel" items="#{modalidadeBean.getMapList(item.id)}" >
+                                    <span>
+                                        <h:outputText value="#{itemLabel.value}"/>
+                                        <h:outputLabel value="x">
+                                            <f:ajax event="click" execute="@this" render="addItm1_Sub3#{item.id}" listener="#{modalidadeBean.desativeObjClicked(itemLabel.id,item.id)}" />
+                                        </h:outputLabel>
+                                    </span>
+                                </c:forEach>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+             <div class="divAccordeon">
+                    <div class="headerSection">   
+                        <li>      
+                            <h:outputLabel class="nomeModalidadeLocal">Localidade</h:outputLabel>
+                        </li>
+                        <nav>
+                            <h:form id="AddItem1_SuperLocal">
+                                <h:inputText 
+                                    id="AddItem1_CaixaTextoLocal"
+                                    value="#{modalidadeBean.localidade.value}" 
+                                    class="modalidadeDesignacaoPagamentoLocal">
+                                    <p:ajax event="change" process="@this"/>
+                                </h:inputText>
+                                <h:commandButton value="Adicionar" class="pagamentoLocal" action="#{modalidadeBean.addLocalidade()}" >
+                                    <f:ajax execute="@this" render=":addItm1_Sub3Local" />
+                                </h:commandButton>
+                            </h:form>
+                        </nav>
+                    </div>
+                    <div class="bodySection">
+                        <div>
+                            <h:form id="addItm1_Sub3Local">
+                                <c:forEach id="AddItem1_SelectOneLocal" var="itemLabel" items="#{modalidadeBean.listaLocalidade}" >
+                                    <span>
+                                        <h:outputText value="#{itemLabel.value}"/>
+                                        <h:outputLabel value="x">
+                                            <f:ajax event="click" execute="@this" render="addItm1_Sub3Local"
+                                                     listener="#{modalidadeBean.desatieLoCalidade(itemLabel)}" />
+                                        </h:outputLabel>
+                                    </span>
+                                </c:forEach>
+                            </h:form>
+                        </div>
+                    </div>
+             </div>
+            <h:form id="formAgencia">
+                <p:growl id="growlAgencia" showDetail="false" life="10000"/>
+                <div class="agency">
+                    <h3>Agência</h3>
+                    <span>
+                        <h:inputText value="#{modalidadeBean.agencia.nome}" id="nomeAgencia"/>
+                        <h:selectOneMenu value="#{modalidadeBean.agencia.localidade}" id="localidadeAgencia">
+                            <f:selectItem itemLabel="(Selecione Localidade)"/>
+                            <f:selectItems value="#{modalidadeBean.listaLocalidade}" var="loca" itemValue="#{loca.id}" itemLabel="#{loca.value}" />
+                        </h:selectOneMenu>
+                        <h:commandButton value="Adicionar" type="button"  class="addAgency" action="#{modalidadeBean.adicionarAgencia()}">
+                            <f:ajax execute="nomeAgencia localidadeAgencia" />
+                        </h:commandButton>
+                    </span>
+                    <div class="list-agency">
+                        <p:dataTable id="listsAgentia" value="#{modalidadeBean.listaAGENCIA}" var="lag" scrollable="true" scrollHeight="200">      
+                            <p:column headerText="Data registro">
+                                <h:outputText value="#{lag.data}"/>
+                            </p:column>                                
+                            <p:column headerText="Agência" >
+                                <h:outputText value="#{lag.nome}"/>
+                            </p:column>
+                            <p:column headerText="Localidade">
+                                <h:outputText value="#{lag.localidade}"/>
+                            </p:column>
+                            <p:column headerText="Colaboradores">
+                                <h:outputText value="#{lag.numFuncionario}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </h:form>
+        </div> 
+
+    </h:body>
+    <style>        
+        .bodySection{
+            overflow: auto;
+            max-height: 300px;
+
+        }
+        .divAccordeon{
+            width: 90%;
+            margin: auto;
+            padding: 20px 0;
+            border-bottom: 1px #ddd solid;
+
+        }
+        .divAccordeon .headerSection{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .headerSection li{
+            list-style: none;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            position: relative;
+            padding-left:  15px
+        }
+        .headerSection li:after{
+            content: "";
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 8px solid #555;
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+        .headerSection {
+            list-style: none;
+        }
+        .headerSection nav{
+            height: 36px;
+            border: 2px #4D87E2 solid;
+            border-radius: 3px;
+        }
+        .headerSection nav input{
+            height: 32px;
+            border: none;
+            padding: 0 5px;
+        }
+        .headerSection nav [type=text]{
+            width: 220px;
+        }
+        .headerSection nav [type=submit]{
+            background: #4D87E2;
+            font-weight: bold;
+            font-size: 14px;
+            color: #fff;
+            padding: 0 10px;
+        }
+        .bodySection{
+            display: none;
+            margin-top: 20px;
+            padding: 20px 10px;
+        }
+        .bodySection > div{
+
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .bodySection span{
+            background: #fff;
+            display: inline-block;
+            padding-left: 10px;
+            color: #444;
+            border: 1px #ddd solid;
+            margin: 0 1rem .5rem 0;
+            font-size: .9em;
+        }
+        .bodySection label{
+            padding: 2px 10px;
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 1.2rem;
+            background: #eee;
+            cursor: pointer;
+            color: #666;
+            transition: all .3s ease;
+        }
+        .bodySection label:hover{
+            background: #666;
+            color: #eee;
+            transition: all .3s ease;
+        }
+        .active{
+            background: #f8f8f8;
+        }
+        .headerSection .liActive{
+            color: #4D87E2;
+        }
+        .headerSection .liActive:after{
+            content: "";
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #4D87E2;
+            position: absolute;
+            left: -2px;
+            top: 6px;
+        }
+        .agency{
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column
+        }
+        .agency span{
+            /*display: flex;*/
+            justify-content: flex-end;
+        }
+        .agency select,
+        .agency input{
+            border: 1px #ccc solid;
+            padding: 8px;
+            margin-right: 10px;
+        }
+        .agency input[type = text]{
+            min-width: 300px;
+        }
+        .list-agency{
+            margin-top: 15px;
+        }
+
+    </style>
+    <script>
+
+        $('li').on('click', function () {
+            var me = $(this);
+            var father = $(this).parent();
+            var next = father.next();
+            next.slideToggle(300).addClass('active');
+            me.toggleClass('liActive');
+        });
+
+        $(".addAgency").click(function ()
+        {
+            $(".agency [type=text], select").each(function ()
+            {
+                if ($(this).val() === "")
+                    $(this).css("border", "1px solid red");
+            });
+        });
+
+        function newAgency()
+        {
+            $(".agency [type=text], select").each(function ()
+            {
+                $(this).css("border", "");
+                $(this).val("");
+            });
+
+        }
+    </script>             
+</html>

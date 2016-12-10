@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="Styles" name="menuCSS.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="editPassCSS.css"></h:outputStylesheet>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    <h:body id="thisPage">
+        <header>
+            <a href="#" id="logo"></a>
+            <ul>
+                <li><a href="R.ClienteTest.xhtml" id="mDossierClient" class="menuCliente"   > <span class=""><i></i></span>Dossier Cliente</a></li>
+                <li><a href="Simulacao.xhtml" id="mSimulacao" class="menuSimulacao"   > <span class=""><i></i></span >Simulação</a></li>                    
+                <li ><a href="Relatorio.xhtml" id="mRelatorio" class="relatorioMenu" > <span class=""><i></i></span>Relatórios</a></li>
+                <li><a href="Administracao.xhtml" id="mAdministracao" class="administracaoMenu"><span class=""><i></i></span>Administração</a></li>
+                <li class="loggedUser"><a href="#" > <span class=""><i></i></span><h:outputLabel value="#{sessionUtil.nomeAcesso}" /></a>
+                    <ul class="menuUser">
+                        <li><a href="#" class="" style="font-size: 60%; font-weight: bolder;" > <span class=""><i></i></span> #{sessionUtil.nomeAgecia}</a></li>
+                        <li><a href="#" class="alterarSenhaUtilizador" > <span class=""><i></i></span>Editar senha</a></li>
+                            <li><a href="#"  class="terminarSessao"> <span class=""><i></i></span>Terminar Sessão</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        <div class="modalPage modal mo">
+                <div class="modalFrame modalFrame0">                                            
+                    <div class="modalContainer">
+                        <h:outputLabel class="textInfo">
+                        </h:outputLabel>
+                        <h:form>
+                            <div class="buttonsModal">
+                                <h:commandButton class="confirmButtons simModal" value="Sim" action="#{utilizadorBean.terminarSessao()}">
+                                    <p:ajax process="@this"/>
+                                </h:commandButton>
+                                <h:commandButton class="confirmButtons cancelar" value="Cancelar"></h:commandButton>
+                            </div>
+                            <p:poll resetValues="true" interval="5" stop="true" widgetVar="myPoll" autoStart="false" class="poll" />
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        
+        <div class="modalPage modalChangePass">
+            <div class="modalFrame modalFrame1">
+                <div class="closeModal">x</div>
+                
+                <h:form id="beq">
+                    <p class="moreTop">
+                        <h:outputLabel id="alterarSenhaNif" value="#{sessionUtil.nomeAcesso}"></h:outputLabel>  
+                 
+                    </p>
+                    <p>
+                        Senha atual
+                        <h:inputSecret  class="novaS senhaAtual" id="alterarSenhaAtual" value="#{utilizadorBean.utilizador.senhaAtual}">
+                            <p:ajax event="blur" listener="#{utilizadorBean.senhaAtual()}" process="@this"/>
+                        </h:inputSecret>
+                    </p>
+                    <p>
+                        Nova senha 
+                        <h:inputSecret  class="novaS novaSenha" id="novaSenhaUtilizador" value="#{utilizadorBean.utilizador.novaSenha}"/>
+                    </p>
+                    <p>
+                        Confirme a nova senha
+                        <h:inputSecret  class="confSenha"  id="confirmarSenha" value="#{utilizadorBean.utilizador.confirmarSenha}"/>
+                    </p>
+                    <p>
+                        <h:commandButton value="Editar"  class="concluirSenha editarSenha" action="#{utilizadorBean.AlterarSenha(0)}">
+                            <f:ajax execute="alterarSenhaAtual novaSenhaUtilizador confirmarSenha"/>
+                        </h:commandButton>
+                        <h:commandButton value="Cancelar" class="fechar"/>
+                    </p>
+                </h:form>
+            </div>
+        </div>
+        
+        
+        
+                <div class="modalPage modalErro">
+                <div class="modalFrame modalFrame0">                                            
+                    <div class="modalContainer">
+                        <h:outputLabel class="textInfo">
+                        </h:outputLabel>
+                        <h:form>
+                            <div class="buttonsModal">
+                                <h:commandButton class="confirmButtons simModal" value="Sim">
+                                    <p:ajax process="@this"/>
+                                </h:commandButton>
+                                <h:commandButton class="confirmButtons cancelar" value="Cancelar"></h:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+<!--         <div class="modalPage modalErroTest">
+             <div class="modalFrame modalFrame0" align="center">
+                <h:panelGrid columns="1" style="text-align: center; padding-top: 15px" >
+                    <h:outputLabel class="textModalErroRed"  value="Sem conexão com base de dados"/>
+                    <h:graphicImage value="/Images/ajax-loader (3).gif" style=" border: 2px; "/>
+                    <h:outputLabel class="textModalErroVerde" value="Por favor, aguarde"/>
+                </h:panelGrid>
+             </div>
+        </div>-->
+    </h:body>
+    <style>
+        #thisPage #mDossierClient{
+            border-radius: 10px 10px 0 0;
+            background: #4d87e2;
+            color: #fff;
+            transition: all .3s;
+        }
+        .modalChangePass p{
+            margin: 12px auto !important;
+        }
+        .modalChangePass [type=text]{
+            padding: 10px 5px !important;
+        }
+        .modalChangePass [type=submit]{
+            padding: 8px 0 !important;
+            width: 30%;
+        }
+        .modalChangePass .moreTop{
+            margin-bottom: 30px !important;
+        }
+        .modalChangePass [value=Editar]{
+            margin-left: 37% !important;
+        }
+        .modalChangePass [value=Cancelar]{
+        }
+         .ui-growl-item-container {
+            background:rgba(0,0,0,0.6);
+   
+        }
+        .ui-growl-title {
+            font: 14px cambria;
+        }
+        .ui-growl-message p {
+            font: 16px sans-serif;
+            text-align: left;
+        }
+        .ui-growl-icon-close {
+            background: white;
+        }
+        
+        .textModalErroRed{
+            font-size: 14px;
+            color: #ff0000;
+            font-weight: bold; 
+            font-family: sans-serif;
+            text-transform: uppercase;
+        }
+        .textModalConfig{
+            font-size: 14px;
+            color: black;
+            font-weight: bold; 
+            font-family: sans-serif;
+            text-transform: uppercase;
+        }
+        .textModalConfig1{
+            font-size: 14px;
+            color: black;
+            font-family: sans-serif;
+            text-transform: uppercase;
+        }
+        .textModalErroVerde{
+            font-size: 14px;
+            color: #009933;
+            font-weight: bold; 
+            font-family: sans-serif;
+        }
+        .textInfo{margin-left:40px;font-family: sans-serif;font-weight: bold; font-size: 14px;}
+    </style>
+    <script type="text/javascript">
+        $(".loggedUser").click(function(){
+        $(".menuUser").slideToggle(400);
+        $(".terminarSessao").click(function (){
+        $(".textInfo").html("Desejas realmente terminar a sessão ?");
+         $(".simModal").show();
+       $(".cancelar").val("Cancelar");
+        $(".modal").show();
+        });
+        
+    });
+
+    </script>
+</html>
+

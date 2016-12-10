@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="Transferencia.js" />
+          <h:outputScript library="JQuery" name="ajaxLoading.js" />
+        <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+         <h:outputScript library="JQuery" name="formCliente.js" />
+    </h:head>
+    <h:body>
+        <h:form id="infoCredito">
+             <div class="modalPage modalImage">
+                     <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+               </div>
+            <div class="accord">
+                <section id="seccao1" class="sec1" >
+                    <h:panelGrid columns="4" class="panCredito" cellspacing="8">
+                            <h:outputLabel value="Data Inicio Total credito concebido"/>
+                            <p:calendar
+                                navigator="true"
+                                pattern="dd-MM-yyyy"
+                                value="#{relatorioBean.relatorio.dataInicial}"
+                                id="dataInicialCredito">
+                                <p:ajax process="@this dataFinalCredito creditoPeriodo tipoCreditoC agenciaCreditoConcedido"
+                                event="dateSelect" 
+                                    onstart="mostrarRelCreditoConcebido()"
+                                    oncomplete="fecharProcessamento()"
+                                listener="#{relatorioBean.RelatorioCredito(null)}" />
+                            </p:calendar>
+                            <h:outputLabel value="Data Fim Total credito concebido"/>
+                            <p:calendar navigator="true" 
+                                pattern="dd-MM-yyyy"
+                                id="dataFinalCredito"
+                                value="#{relatorioBean.relatorio.dataFinal}">
+                                <p:ajax process="dataInicialCredito @this creditoPeriodo tipoCreditoC agenciaCreditoConcedido"
+                                    event="dateSelect" 
+                                    onstart="mostrarRelCreditoConcebido()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="#{relatorioBean.RelatorioCredito(null)}">
+                               </p:ajax>
+                            </p:calendar>
+                            <h:outputLabel value="Periodo em comparação(ex:1)" />
+                            <h:inputText class="txt numero2 periodoCredito" 
+                                id="creditoPeriodo" 
+                                value="#{relatorioBean.relatorio.periodoEmComparacao}">
+                            <p:ajax process="dataInicialCredito dataFinalCredito creditoPeriodo tipoCreditoC agenciaCreditoConcedido"
+                                    event="change" 
+                                    onstart="mostrarRelCreditoConcebido()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="#{relatorioBean.RelatorioCredito(null)}" />
+                            </h:inputText>
+                            <h:outputLabel value="Tipo Credito" />
+                            <h:selectOneMenu class="tipCred" 
+                                value="#{relatorioBean.relatorio.tipoCredito}" 
+                                id="tipoCreditoC">
+                                <f:selectItem itemLabel="(Selecione)"/>
+                                <f:selectItems value="#{relatorioBean.tipoCredito}" var="t" itemValue="#{t.id}" itemLabel="#{t.value}"/>
+                                  <p:ajax process="dataInicialCredito dataFinalCredito creditoPeriodo tipoCreditoC agenciaCreditoConcedido"
+                                    event="change" 
+                                    onstart="mostrarRelCreditoConcebido()"
+                                    oncomplete="fecharProcessamento()"
+                                    listener="#{relatorioBean.RelatorioCredito(null)}" />
+                            </h:selectOneMenu>
+                            <h:outputLabel  value="Agência"/>
+                            <h:selectOneMenu class="selet" value="#{relatorioBean.relatorio.agencia}" id="agenciaCreditoConcedido">
+                                  <f:selectItems value="#{relatorioBean.agencias}" var="LLT" 
+                                                 itemLabel="#{LLT.value}" itemValue="#{LLT.id}">
+                                  </f:selectItems>
+                                   <p:ajax process="dataInicialCredito dataFinalCredito creditoPeriodo tipoCreditoC agenciaCreditoConcedido"
+                                        event="change" 
+                                        onstart="mostrarRelCreditoConcebido()"
+                                        oncomplete="fecharProcessamento()"
+                                        listener="#{relatorioBean.RelatorioCredito(null)}" >
+                                   </p:ajax>
+                            </h:selectOneMenu>
+                    </h:panelGrid>
+                    <p:dataTable value="#{relatorioBean.infoCredito}" 
+                        var="infoC" 
+                        scrollable="true"
+                        scrollHeight="300"
+                        emptyMessage="" 
+                        id="tabelaCredito">
+                        <p:column headerText="NºDossier" sortBy="#{infoC.dossier}">
+                            <h:outputText value="#{infoC.dossier}"/>
+                        </p:column>
+                        <p:column headerText="NOME" sortBy="#{infoC.nome}">
+                            <h:outputText value="#{infoC.nome}"/>
+                        </p:column>
+                        <p:column headerText="Estado" sortBy="#{infoC.estado}">
+                            <h:outputText value="#{infoC.estado}"/>
+                        </p:column>
+                        <p:column headerText="Capital Concebido" sortBy="#{infoC.capitalConcebido}">
+                             <h:outputText value="#{infoC.capitalConcebido}"/>
+                        </p:column>
+                        <p:column headerText="Montante em dívida"  sortBy="#{infoC.montanteDivida}">
+                             <h:outputText value="#{infoC.montanteDivida}"/>
+                        </p:column>
+                        <p:column headerText="TAEG"  sortBy="#{infoC.taeg}">
+                             <h:outputText value="#{infoC.taeg}"/>
+                        </p:column>
+                    </p:dataTable><br/>
+             
+                      <h:outputLabel value="Total Capital concebido:" style="font-size: 15px;margin-left: 57px;font-weight: bold;"/>
+                      <h:outputLabel value="#{relatorioBean.relatorio.capitalConcebidoFooter}" style="font-size: 12px;font-weight: bold;" id="totalCapitaCon"/>
+                      <h:outputLabel value="Total montante dívida:" style="font-size: 15px;font-weight: bold; " />
+                      <h:outputLabel value="#{relatorioBean.relatorio.montanteDividaFooter}" style="font-size: 12px;font-weight: bold;" id="totalMontanteD"/>
+                      <h:outputLabel value="Total taeg:" style="font-size: 15px;font-weight: bold;" />
+                      <h:outputLabel value="#{relatorioBean.relatorio.taegFooter}" style="font-size: 12px;" id="totalTaegC"/> 
+                    
+                   <br/>    
+                    <h:panelGrid columns="1" style="width: 100%">
+                      
+                        <h:panelGrid cellpadding="5" style="margin-left: 5%;">
+                            <p> Capital concebido por dia, semana, mês, ano,ou por periodo específico </p>
+                            <p> TAEG (Juros) obtidos (Derivados de capital concebido)</p>
+                            <p> por dia, semana, mês, ano,ou por periodo específico </p>  
+                        </h:panelGrid>
+                    </h:panelGrid>            
+                </section>             
+            </div>
+        </h:form>
+    </h:body>
+    <style>       
+     .numero2{
+         width: 70%;
+         padding: 5px;
+         margin-left: 2%;
+         border-radius: 3px;
+         border: 1px #a6a6a6 solid;
+     }
+     .tipCred{
+         width: 170%;
+         margin-left: -70%; 
+     }
+     .Totais{
+         display: flex;
+         width: 100%;
+         border: 1px solid #31AF70;
+         font: 12px arial,sans-serif;
+         color: #a6a6a6;
+     }
+    </style>
+
+</html>
+
+

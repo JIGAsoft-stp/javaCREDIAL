@@ -1,0 +1,253 @@
+
+#paginaRClient{
+    font-family: arial, sans-serif;
+}
+#paginaRClient input[type="text"], .dataN{ border-radius: 2px; }
+#paginaRClient input[type="text"], textarea, select{
+    text-indent: 5px;
+    font-size: 14px;
+    border: 1.6px #ccc solid;
+    height: 32px;
+    box-sizing: border-box;
+    color: #444;
+    margin: 5px 0;
+}
+.geralFormRCT{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#paginaRClient .sectionLeft{
+    width: 35%;
+    padding: 6px 12px 0 0;
+    border-right: 2px #eee solid;
+    border-bottom: 2px #eee solid;
+    background: #fcfcfc;
+    position: relative;
+    transition: all .3s;
+}
+.show-form-cl{
+    position: absolute;
+    top: 12%;
+    left: 2%;
+    display: inline-block;
+    width: 50px;
+    line-height: 47px;
+    height: 50px;
+    border-radius: 50%;
+    background: #4d87e2;
+    color: #fff;
+    text-align: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 5px #eee;
+}
+.sectionLeft.shrink{
+    width: 0 !important;
+    overflow: hidden;
+    padding: 0 !important;
+    border: none !important;
+    transition: all .3s;
+}
+.sectionLeft.shrink *{
+    display: none;
+}
+.sectionLeft.shrink + div{
+    width: 92% !important;
+}
+.minus{
+    position: absolute;
+    top: 6px;
+    right: 0;
+    color: red;
+    font: 25px 'Gill Sans MT';
+    font-weight: lighter;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+h1{
+    font-size: 22px;
+    color: #555;
+    margin: 10px 0 20px 6px;
+    text-align: center;
+    width: 97%;
+}
+
+.fifty, .thirty, .fourthy{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.fifty input, .fifty select{
+    width: 48%;
+}
+.dataN{
+    width: 50%;
+    border: none;
+}
+.dataN > [type=text]{
+    width: 100%;
+    box-sizing: border-box;
+
+}
+.sectionLeft > textarea{
+    width: 100%;
+    height: 68px;
+}
+.thirty input{
+    width: 32%;
+}
+.fourthy input, .fourthy select{
+    width: 22.3%;
+}
+.sectionLeft > label{
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+    font-size: 16px;
+    color: #555;
+    margin-left: 6px;
+    margin-top: 8px;
+}
+hr{
+    margin: 0 0 4px 0;
+    border: 1px #bbb solid;
+    width: 100%;
+}
+
+.sectionLeft .clienteGuardar{
+    width: 100%;
+    padding: 15px 0;
+}
+#paginaRClient input[type="button"]{
+
+    background: #4d87e2;
+    color: white;
+    border: none;
+    font: 17px sans-serif;
+    margin-top: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+#paginaRClient input[type="submit"]:hover, input[type="button"]:hover{
+    background: steelblue;
+    cursor: pointer;
+    transition: all .8s ease;
+}
+#paginaRClient .sectionRight{
+
+    width: 62%;
+    transition: all .3s;
+}
+.sobre{
+    margin-bottom: 30px;
+}
+.sobre{
+    height: 300px;
+}
+.sob{
+    height: 290px;
+}
+.sobre section{
+    display: table;
+    width: 100%;
+    padding: 15px 20px;
+}
+.sobre section select{
+    width: 250px;
+    position: relative;
+    right: 0;
+}
+.sobre section div{
+    float: right;
+    width: 400px;
+    border: 1px #ddd solid;
+    height: 36px;
+    border-radius: 5px;
+}
+.sobre section div input{
+    height: 100%;
+    border: none !important;
+    margin: 0 !important;
+}
+.sobre .btSearch {
+    min-width: 60px; 
+    background: #4682b4;
+    color: #fff; 
+    width: 20%
+}
+.sobre [type=text] {
+    width: 80%;
+}
+.sob{
+    margin-top: 12px;
+    max-height: 280px;
+    /*  //outline: 2px #000 solid; */
+}
+
+.accordion{
+    width: 100%;
+    padding: 0; margin: 0;
+    list-style: none;   
+}
+
+.accordionHeader{
+    display: block;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+    color: #4682b4;
+    line-height: 1.9em;
+    background: #eee;
+    outline: 3px #fff solid;
+    padding-left: 20px;
+    border: 1px #ddd solid;
+    border-radius: 3px;
+}
+.accordionContent{
+    padding: 0px 100px; 
+    margin: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all .4s ease;
+    max-height: 0;
+}
+.accordionContent:target{
+    padding: 0px 0; margin: 0;
+    overflow: visible;
+    height: 188px;    
+    max-height: 90%;
+    overflow-y: scroll;
+    /* //overflow-x: no-display;*/
+}
+.modalFrame{
+    background: #fff;
+    width: 40%;
+    height: 290px;
+    left: 50%; top: 50%;
+    position: absolute;
+    margin-left: -18%;
+    margin-top: -150px;
+    padding: 8px;
+    border-radius: 2px;
+}
+.closeModalFrame{
+    padding: 5px 10px;
+    top: 0; right: 0;
+    position: absolute;
+    cursor: pointer;
+    font: 18px arial;
+    color: red;
+    border-radius: 2px;
+    font-weight: bold;
+}
+.closeModalFrame:hover{
+    color: white;
+    background: #ff3300;
+
+
+}
+

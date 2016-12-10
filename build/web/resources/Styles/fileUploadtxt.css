@@ -1,0 +1,66 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 16, 2015, 11:45:10 PM
+    Author     : AhmedJorge
+*/
+
+.ui-fileupload-buttonbar .ui-fileupload-choose input {
+        border: none;   
+}
+.ui-fileupload-buttonbar .ui-fileupload-choose.ui-state-disabled input {
+        cursor:default;
+}
+.ui-fileupload-choose {
+        position:relative;
+        overflow:hidden;
+        border: none;
+}
+.ui-fileupload-buttonbar {
+       border: none;
+}
+.ui-fileupload-buttonbar .ui-button {
+        vertical-align:middle;
+        margin-right:0em;
+}
+.ui-fileupload-content {
+        display: none;
+}
+.ui-fileupload-content .ui-progressbar {
+        display: none;
+}
+.ui-fileupload-files {
+        margin:0px 0px;
+        border:none;
+}
+.ui-fileupload-files td {
+        padding:0px 0px;
+}
+.ui-fileupload-files img {
+        border:none;
+}
+
+.ui-widget-header .ui-widget{
+  width: 150px;
+}
+.ui-button-icon-left, .ui-icon, .ui-c, .ui-icon-plusthick
+{
+    margin: 0px;
+    width: 0px;
+    display: none;
+}
+
+.ui-button-text .ui-c
+{
+    margin: 0px;
+    position: relative;
+}
+.ui-fileupload-buttonbar, .ui-corner-top
+{
+    margin: 0px;
+    width: 150px;
+    padding: 0px;
+}

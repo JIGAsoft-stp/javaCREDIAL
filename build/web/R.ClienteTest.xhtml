@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    
+    <h:head>
+        <h:outputStylesheet library="Styles" name="editPassCSS.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="resources/Styles/Style.css"></link>-->
+        <h:outputStylesheet library="Styles" name="Style.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        
+        <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Dossier Cliente</title>                
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+                <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+                <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+                <h:outputScript library="JQuery" name="queryOne.js" />
+                <h:outputScript library="JQuery" name="formCliente.js" />
+        </f:facet>
+    </h:head>
+    <body class="paginaRClient" id="paginaRClient">
+       <ui:include src="Includes/menu.xhtml"></ui:include>
+       <h:form id="forma" class="geralFormRCT">  
+            <p:growl   life="10000" id="growl-error"  />
+              <p:idleMonitor timeout="2000" >   
+                  <p:ajax event="idle"   listener="#{clienteBean.pegarTodosClientes()}"  />
+                  <p:ajax event="active"   listener="#{clienteBean.pegarTodosClientes()}"  />
+       
+              </p:idleMonitor>
+            <span class="show-form-cl">+</span>
+            <div class="sectionLeft shrink">
+                <h1>Situação do Cliente</h1>
+                <span class="minus">X</span>
+                <p:growl id="msg" showDetail="true" life="300" />
+                    <div class="fifty" id="paniel1">
+                        <h:inputText id="nif" pt:placeholder="NIF do Cliente"
+                                     class="n clienteNif"
+                                     maxlength="9"
+                                     required="true"
+                                     value="#{clienteBean.cliente.nif}" >
+                            <p:ajax process="@this"
+                                    event="blur"
+                                    listener="#{clienteBean.verificarNif()}" 
+                                    oncomplete="NifExiste(xhr, status, args)"/>
+                        </h:inputText>
+                        <h:outputText id="dossier" pt:placeholder="Nº de Dossier" />
+                        <h:inputText id="nome" pt:placeholder="Nome" 
+                                     value="#{clienteBean.cliente.nome}"
+                                     required="true"
+                                     class="clienteNome"  >
+                        </h:inputText>
+                        <h:inputText id="apelido" pt:placeholder="Apelido" 
+                                     required="true"
+                                     value="#{clienteBean.cliente.apelido}"
+                                     class="clienteApelido"  >
+                        </h:inputText>
+                        <p:calendar pt:placeholder="Data Nascimento"
+                                    readonlyInput="true"
+                                    navigator="true"
+                                    id="dataN"
+                                    title="Data de nascimento"
+                                    value="#{clienteBean.cliente.dataNasc}"
+                                    pattern="dd-MM-yyyy"
+                                    maxdate="#{dataBean.maior18}"
+                                    class="clienteDataNasc dataN" >
+                        </p:calendar>
+                        <h:selectOneMenu value="#{clienteBean.cliente.genero}" required="true"
+                                         id="ClienteSexo" class="clienteSexo"  > 
+                            <f:selectItem itemLabel="Sexo"/>   
+                            <f:selectItems value="#{clienteBean.sexos}" var="sexo" itemValue="#{sexo.id}" itemLabel="#{sexo.value}"/>
+                        </h:selectOneMenu>
+                        <h:selectOneMenu value="#{clienteBean.cliente.estadoCivil}"  required="true"
+                                         id="clienteEstadoCivil"
+                                         class="clienteEstado" >
+                            <f:selectItem itemLabel="Estado Civil"/>
+                            <f:selectItems value="#{clienteBean.estados}" 
+                                           var="estado" itemValue="#{estado.id}" itemLabel="#{estado.value}"/>
+                        </h:selectOneMenu>        
+                        
+                    </div>
+                <h:inputTextarea pt:placeholder="Morada"  required="true"
+                                         id="morada"
+                                         value="#{clienteBean.cliente.morada}"
+                                         class="clienteMorada">
+                        </h:inputTextarea>
+                    
+                    <label>Rendimento</label>
+                    <hr/>
+                    <div class="fifty"  id="painel2">
+                        <h:selectOneMenu value="#{clienteBean.cliente.profissao}" id="ClienteProf" class="clienteProf" required="true"  > 
+                            <f:selectItem itemLabel="Profissao"/>       
+                            <f:selectItems value="#{clienteBean.listaProfissao}" var="prof" itemValue="#{prof.id}" itemLabel="#{prof.value}" />                   
+                        </h:selectOneMenu>
+                        <h:inputText pt:placeholder="Salário"
+                                     class="n clienteSalario"
+                                     required="true"
+                                     value="#{clienteBean.cliente.salario}"
+                                     id="clienteSalario" >
+                        </h:inputText>
+                        <h:selectOneMenu value="#{clienteBean.cliente.localidade}"  required="true"
+                                         id="clienteLocalidade" class="clienteLocalidade"  > 
+                            <f:selectItem itemLabel="Localidade"/>  
+                            <f:selectItems value="#{clienteBean.listaLocalidade}" var="localidade" itemValue="#{localidade.id}" itemLabel="#{localidade.value}" />
+                        </h:selectOneMenu>
+                        <h:selectOneMenu value="#{clienteBean.cliente.localTrabalho}"  required="true"
+                                         id="clienteLocalT" class="clienteLocalT" > 
+                            <f:selectItem itemLabel="Local de trabalho"/>    
+                            <f:selectItems value="#{clienteBean.listaLocalTrabalho}" var="local" itemValue="#{local.id}" itemLabel="#{local.value}"/>
+                        </h:selectOneMenu>
+                    </div>   
+                                        
+                    <label>Contactos</label>
+                    <hr/>
+                    <div class="thirty" id="painel3">
+                        <h:inputText pt:placeholder="Movel" 
+                                     maxlength="7"
+                                     required="true"
+                                     value="#{clienteBean.cliente.telemovel}" 
+                                     id="clienteMovel" class="clienteMovel"  >
+                        </h:inputText>
+                        
+                        <h:inputText pt:placeholder="Fixo"
+                                     maxlength="7"
+                                     value="#{clienteBean.cliente.telefone}"
+                                     id="clienteTelefone" class="clienteFixo">
+                        </h:inputText>
+                        <h:inputText pt:placeholder="Serviço"
+                                     value="#{clienteBean.cliente.servico}"
+                                     id="clienteS" class="clienteServico">
+                        </h:inputText>
+                        <h:inputText pt:placeholder="Email"
+                                     value="#{clienteBean.cliente.email}"
+                                     id="email" style="width: 100%" class="clienteEmail">
+                        </h:inputText>
+                    </div>
+                    
+                   <label>Arquivagem</label>
+                    <hr/>
+                    <div class="fourthy" id="painel4">
+                        <h:selectOneMenu value="#{clienteBean.cliente.ano}" id="clienteAno" class="clienteAno"  required="true"  >
+                            <f:selectItem itemLabel="Ano" />
+                            <f:selectItem itemValue="#{clienteBean.anoAtual}"/>
+                        </h:selectOneMenu>
+                        <h:selectOneMenu value="#{clienteBean.cliente.mes}" id="clienteMes" class="clienteMes" required="true" >
+                            <f:selectItem itemLabel="Mês"/>
+                            <f:selectItems value="#{clienteBean.meses}"/>
+                        </h:selectOneMenu> 
+                        <h:selectOneMenu value="#{clienteBean.cliente.letra}" id="clienteLetra" class="clienteLetra" required="true"   >
+                            <f:selectItem itemLabel="Letra"/>
+                            <f:selectItems value="#{clienteBean.letra}"/>
+                        </h:selectOneMenu> 
+                        <h:inputText  pt:placeholder="Capa"
+                                      class="quatro clienteCapa"
+                                      required="true"
+                                      id="capa"
+                                      value="#{clienteBean.cliente.numeroCapa}" >
+                        </h:inputText>
+                    </div>
+                    <h:commandButton type="button" value="Adicionar Novo Cliente" id="btClient" class="clienteGuardar" action="#{clienteBean.registrarCliente()}"  >
+                        <f:ajax execute="email nif nome apelido dataN ClienteSexo clienteEstadoCivil morada ClienteProf clienteSalario clienteLocalidade clienteLocalT clienteMovel clienteTelefone clienteS clienteAno clienteMes clienteLetra capa"  />
+                    </h:commandButton> 
+            </div>
+            <div class="sectionRight">
+                <div class="sobre"> 
+                    <section>
+                        <label>Filtrar por: </label>
+                        <h:selectOneMenu value="#{clienteBean.campoPesquisa}" id="campoP">
+                            <f:selectItem itemLabel="QUALQUER" itemValue="*"></f:selectItem>
+                            <f:selectItem itemLabel="NIF" itemValue="NIF"></f:selectItem>
+                            <f:selectItem itemLabel="NOME" itemValue="NOME"></f:selectItem>
+                            <f:selectItem itemLabel="CHEQUE" itemValue="CHEQUE"></f:selectItem>
+                            <f:selectItem itemLabel="GARANTIA" itemValue="GARANTIA"></f:selectItem>
+                        </h:selectOneMenu>
+                        <div>                            
+                            <h:inputText pt:placeholder="Procurar" value="#{clienteBean.pesquisa}"  id="clientePesquisa" class="pesquisarCliente" >
+                            </h:inputText>
+                            <h:commandButton class="btSearch" type="button" value="OK"  action="#{clienteBean.pesquisarCliente()}">
+                                <f:ajax execute="campoP clientePesquisa"/>
+                            </h:commandButton>
+                        </div>
+                    </section>
+                    <p:dataTable  id="clienteTable" 
+                                   emptyMessage="Nenhum cliente encontrado"
+                                   value="#{clienteBean.clientes}" 
+                                   var="cli" selectionMode="single"
+                                   rowKey="#{cli.nif}" 
+                                   style="font: 12px sans-serif; height: 230px !important;"
+                                   selection="#{clienteBean.cliente}"  
+                                   scrollable="true"
+                                   lazy="true"
+                                   scrollHeight="230">                                  
+                         <p:ajax  event="rowSelect" update=":forma:credito" onstart="redirecionar()"
+                                  listener="#{clienteBean.ListarHistoricoCreditos(null)}" />
+                         <p:ajax event="rowDblselect" listener="#{clienteBean.clienteSelecionado()}" /><!-- A clicar duas vezes numa linha envia dados para outro formulário-->
+                         <p:column headerText="NIF" width="15" sortBy="#{cli.nif}" >
+                             <h:outputText value="#{cli.nif}"  />
+                         </p:column>                                               
+                         <p:column headerText="Nome" width="25" sortBy="#{cli.nome}">
+                             <h:outputText value="#{cli.nome}" />
+                         </p:column>                                            
+                         <p:column headerText="Apelido" width="55" sortBy="#{cli.apelido}">
+                             <h:outputText value="#{cli.apelido}"/>
+                         </p:column>
+                         <p:column headerText="Info" width="10" >
+                             <h:outputLabel class="icon-info" style="font-weight: bold;" title="Mais informação de #{cli.nome.trim()}" value="Mais" >
+                                 <p:ajax event="click" update=":infoCliente" process="@this" listener="#{clienteBean.showInfoCliente(cli)}" />
+                             </h:outputLabel>
+                         </p:column>
+                    </p:dataTable>                        
+                </div>
+               
+                <div class="sob">
+                    <ul class="accordion"> 
+                        <li>
+                            <a href="#um" class="accordionHeader">Histórico de Créditos do Cliente</a>
+                            <div id="um" class="accordionContent">
+
+                                <p:dataTable  widgetVar="historicoCliente" emptyMessage="Nenhum registro encontrado"
+                                              value="#{clienteBean.historicoCreditos}" 
+                                              var="historico"
+                                              id="credito"
+                                              selectionMode="single"
+                                              rowKey="#{historico.numeroCheque}" 
+                                              style="font-size: 12px;font-family: sans-serif"
+                                              selection="#{clienteBean.credito}"  >           
+                                    <p:ajax event="rowDblselect" process="@this" onstart="redirecionar2()" listener="#{clienteBean.updateP()}" 
+                                            update=":forma:prestacoes" />
+                                    <p:column headerText="Número Dossier"  >
+                                        <h:outputText value="#{historico.numeroDossier}" />
+                                    </p:column>
+                                    <p:column  headerText="Data">
+                                        <h:outputText value="#{historico.dataFimCredito}" />
+                                    </p:column>
+                                    <p:column headerText="Data CNT">
+                                        <h:outputText value="#{historico.dataCnt}"/> 
+                                    </p:column >
+                                    <p:column headerText="Estado">
+                                        <h:outputText value="#{historico.estado}" />
+                                    </p:column>
+                                    <p:column  headerText="Capital Inicial">
+                                        <h:outputText value="#{historico.totalCredito}" />
+                                    </p:column>  
+                                    <p:column  headerText="Total Crédito">
+                                        <h:outputText value="#{historico.capitalInicial}" />
+                                    </p:column>
+                                    <p:column  headerText="TEAG">
+                                        <h:outputText value="#{historico.teag}" />
+                                    </p:column>  
+                                    <p:column  headerText="Valor Pago">
+                                        <h:outputText value="#{historico.valorPago}" />
+                                    </p:column>
+                                    <p:column  headerText="Numero Cheque">
+                                        <h:outputText value="#{historico.numeroCheque}" />
+                                    </p:column>
+                                    <p:column  headerText="Penalidade">
+                                        <h:outputText value="#{historico.penalidade}" />
+                                    </p:column>
+                                    <p:column headerText="Total Efectivo">
+                                        <h:outputText value="#{historico.totalEfetivo}" />
+                                    </p:column>
+                                </p:dataTable >
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#dois" class="accordionHeader">Tabela de amortização do Cliente</a>
+                            <div id="dois" class="accordionContent" >
+                                <p:dataTable emptyMessage="Nenhum registro encontrado" 
+                                             id="prestacoes"
+                                            
+                                             value="#{clienteBean.listaPrestacoes}"
+                                             selection="#{clienteBean.prestacoes}" 
+                                             var="prestacao" selectionMode="single"
+                                             rowKey="#{prestacao}"
+                                             style="font-size: 12px;font-family: sans-serif" > 
+                                    <p:column headerText="Data de Emissão"><h:outputText value="#{prestacao.dataEmissao}" /></p:column>
+                                    <p:column headerText="Data de Endosse"><h:outputText value="#{prestacao.dataEndose}" /></p:column>
+                                    <p:column headerText="Nº Dossier"><h:outputText value="#{prestacao.numeroDossier}" /></p:column>
+                                    <p:column headerText="Reembolso"><h:outputText value="#{prestacao.reembolso}"  /></p:column>
+                                    <p:column headerText="Prestação paga"><h:outputText value="#{prestacao.prestacaoPaga}" /></p:column>
+                                    <p:column headerText="Estado"><h:outputText value="#{prestacao.estadoP}" /></p:column>
+                                      <p:ajax event="rowDblselect" process="@this" listener="#{clienteBean.mostrarDados(pagamento)}" 
+                                      
+                                            oncomplete="openModal(xhr, status, args)" />
+                                </p:dataTable>    
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>   
+            <div class="modalPage modalPagamento">
+                <div class="modalFrame modalFrame2">                                            
+                    <div class="modalContainer">
+                        <ui:include src="Includes/addPagto.xhtml"/>
+                    </div>
+                    <div class="closeModal fecharModalPagamento">X</div>
+                </div>
+            </div>
+            </h:form>  
+       <h:form id="infoCliente">
+           <div class="modalPage mp-userProfile">
+               <div class=" modalFrame modalFrameShowCliente">                                            
+                   <div class="modalContainer">
+                       <h3>Cliente</h3>
+                       <div class="menuSections">
+                           <section>
+                               <p>
+                                   <label class="labelB">Nome: </label><h:outputLabel>#{clienteBean.clienteShow.nome} #{clienteBean.clienteShow.apelido}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Nif: </label><h:outputLabel>#{clienteBean.clienteShow.nif}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Número Dossier: </label><h:outputLabel>#{clienteBean.clienteShow.numeroDossier}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">SEXO: </label><h:outputLabel>#{clienteBean.clienteShow.genero}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB" >Morada: </label><h:outputLabel>#{clienteBean.clienteShow.morada}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Telefone: </label><h:outputLabel>#{clienteBean.clienteShow.telefone}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Telemovel: </label><h:outputLabel>#{clienteBean.clienteShow.telemovel}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Serviço: </label><h:outputLabel>#{clienteBean.clienteShow.servico}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB" >Profissão: </label><h:outputLabel>#{clienteBean.clienteShow.profissao}</h:outputLabel>
+                               </p>
+                               <p>
+                                   <label class="labelB">Salário: </label><h:outputLabel>#{clienteBean.clienteShow.salario}</h:outputLabel>
+                               </p>
+                           </section>
+                       </div>
+                       <div class="closeModalFrame" onclick="$('.mp-userProfile').fadeOut(800);" >X</div>
+                   </div>
+               </div>
+           </div>
+       </h:form>
+       <ui:debug/>
+       
+    </body> 
+    <style>
+      .ui-growl-item-container {
+         background:rgba(0,0,0,0.6);
+
+     }
+     .ui-growl-title {
+         font: 14px cambria;
+     }
+     .ui-growl-message p {
+         font: 16px sans-serif;
+         text-align: left;
+     }
+     .ui-growl-icon-close {
+         background: white;
+     } 
+     *{
+        font-family: 'arial', 'sans-serif';
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+   .ui-inputfield{
+    border-radius: 0;
+    box-shadow: none !important;
+    font: 14px sans-serif;
+    padding: 0 !important;
+    margin-top: 1px;
+    border-radius: 3px;
+    margin-left: 2%;
+   }
+    .ui-inputfield:hover{
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .ui-inputfield:focus{
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .ui-datepicker{
+        border: 1px #4682b4 solid;
+        box-shadow: none;
+        font-size: 12px;
+    }
+    .ui-datepicker .ui-datepicker-header {
+        position: relative;
+        background: #4682b4;
+        color: white;
+        text-shadow: none;
+        font-weight: 100;
+
+    }
+    
+    .labelB{
+        font-weight: bold;
+    }
+    
+    .menuSections section p{
+        padding-top: 15px;
+    }
+    
+    .modalFrameShowCliente{
+        width: 60%;
+        height: 360px;
+    }
+    </style>
+</html>

@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <h:outputScript library="JQuery" name="jquery-1.8.3.js" />
+        <h:outputScript library="JQuery" name="jquery-ui-1.9.2.custom.js" />
+        <h:outputScript library="JQuery" name="RelatorioHomologo.js" />
+         <h:outputScript library="JQuery" name="ajaxLoading.js" />
+         <h:outputScript library="JQuery" name="formCliente.js" />
+        <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="relatorioCSS.css"></h:outputStylesheet>
+    </h:head>
+    <h:body>
+        <section>
+    <h:form id="formmHoform">
+        <p:growl id="ReHoGrowl" showDetail="true" sticky="true"/>
+        
+            
+        <div>
+            <h:outputLabel value="Data Inicio Total credito"/>
+            <p:calendar id="dataIHomologo"
+                class="inputCal"
+                required="true" 
+                value="#{relatorioHomologoBin.relatorioHomologoBin.dataInicial}"
+                 style="width: 93%;"
+                 pattern="dd-MM-yyyy"
+                 navigator="true">
+                <p:ajax event="dateSelect"
+                        update="tabableHomo"
+                        process="formmHoform"
+                          onstart="mostrarRelCrescHomologo()"
+                        oncomplete="fecharProcessamento()"
+                        listener="#{relatorioHomologoBin.pesquisar()}"/>
+            </p:calendar>
+            <h:outputLabel value="Data Fim Total credito"/>
+            <p:calendar
+                        class="inputCal" id="dataFHomologo"
+                        required="true" 
+                        value="#{relatorioHomologoBin.relatorioHomologoBin.dataFinal}" 
+                        style="width: 93%;"
+                        navigator="true"
+                        pattern="dd-MM-yyyy">
+                <p:ajax event="dateSelect" 
+                        update="tabableHomo"
+                        process="formmHoform"
+                        onstart="mostrarRelCrescHomologo()"
+                        oncomplete="fecharProcessamento()"
+                        listener="#{relatorioHomologoBin.pesquisar()}"/>
+            </p:calendar>
+            <h:outputLabel  value="Periodo em comparação"/>
+            <h:inputText required="true" 
+                         value="#{relatorioHomologoBin.relatorioHomologoBin.diferenca}"  class="rHomNumber txt peridoHomologo">
+                <p:ajax event="blur" update="tabableHomo" process="formmHoform"
+                        onstart="mostrarRelCrescHomologo()"
+                        oncomplete="fecharProcessamento()"
+                        listener="#{relatorioHomologoBin.pesquisar()}"/>
+            </h:inputText>
+            <h:outputLabel  value="Local Trabalho"/>
+            <h:selectOneMenu class="selet" value="#{relatorioHomologoBin.relatorioHomologoBin.localTrabalho}" >
+                <f:selectItems value="#{relatorioHomologoBin.listaLocalTrabalho}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                <p:ajax event="change" update="tabableHomo" process="formmHoform" 
+                        onstart="mostrarRelCrescHomologo()"
+                        oncomplete="fecharProcessamento()"
+                        listener="#{relatorioHomologoBin.pesquisar()}"/>
+            </h:selectOneMenu>
+            <h:outputLabel  value="Agência" />
+            <h:selectOneMenu class="selet" value="#{relatorioHomologoBin.relatorioHomologoBin.agencia}" id="agenciaHomologo">
+                <f:selectItems value="#{relatorioHomologoBin.agencias}"
+                               var="LLT" itemLabel="#{LLT.value}" itemValue="#{LLT.id}"/>
+                <p:ajax event="change" update="tabableHomo" process="formmHoform" 
+                        onstart="mostrarRelCrescHomologo()"
+                        oncomplete="fecharProcessamento()"
+                        listener="#{relatorioHomologoBin.pesquisar()}"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="Tipo Credito"/>
+            <h:selectOneMenu class="selet tipoCDividaP" value="#{relatorioHomologoBin.relatorioHomologoBin.tipoCredito}" id="tipoCreditoDividaProduto">
+                <f:selectItem itemLabel="(Selecione)" />
+                <f:selectItems value="#{relatorioBean.tipoCredito}" var="tipoC" itemLabel="#{tipoC.value}" itemValue="#{tipoC.id}"/>
+                 <p:ajax event="change"  
+                          onstart="mostrarRelDividaProduto()"
+                          oncomplete="fecharProcessamento()"
+                         process="formmHoform"
+                        listener="#{relatorioHomologoBin.pesquisar()}"  />
+            </h:selectOneMenu>
+        </div>
+        <div>
+            <p:dataTable id="tabableHomo" value="#{relatorioHomologoBin.tableRelatorioHomologo}" var="trh" class="tableCRH" style="height: 130px; width: 70%; margin-left: 10px;">
+                <p:column headerText="Ano atual" sortBy="#{trh.anoAtual}"> #{trh.anoAtual} </p:column>
+                <p:column headerText="Ano passado" sortBy="#{trh.anoPassado}"> #{trh.anoPassado}</p:column>
+                <p:column headerText="Diferença"  sortBy="#{trh.diferenca}">  #{trh.diferenca} </p:column>
+            </p:dataTable>
+        </div>
+              <div class="modalPage modalImage">
+                 <h:graphicImage value="/Images/ajax-image.gif" class="imageProcess" />
+           </div>
+        </h:form>
+            </section>
+    </h:body>
+    <style>
+        body{
+            font-family: arial, sans-serif;
+        }
+        section{
+            width: 94%;
+            margin: 2px auto;
+        }
+        form > div{
+            width: 38%;
+            display: inline-block;
+            vertical-align: top;
+        }
+        form > div+div{
+            width: 58%;
+            display: inline-block;
+ 
+        }
+        div > label{
+            display: inline-block;
+            width: 180px;
+            font-size: .94em;
+        }
+        div > input,
+        div > select,
+        .ui-inputfield{
+            text-align: center;
+            width: 45% !important;
+            box-sizing: border-box;
+            padding: 6px ;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .tableCRH{
+            border: 1px solid #ccc;
+            overflow: scroll;
+        }
+        
+    </style>
+</html>
+
