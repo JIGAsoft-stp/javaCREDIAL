@@ -59,10 +59,9 @@ $(document).ready(function(e){
    });
       $(".pagamentoNumero").keyup(function(e){
         e.preventDefault();
-        var expre = /[^0-9]/g;
-        // REMOVE OS CARACTERES DA EXPRESSAO ACIMA
-        if ($(this).val().match(expre))
-            $(this).val($(this).val().replace(expre,''));
+        nStr = $(this);
+       var num = nStr.val().replace(/[^0-9.]/g, '');
+        nStr.val(num);
    });
      $(".clienteMovel").keyup(function(e){
         e.preventDefault();
