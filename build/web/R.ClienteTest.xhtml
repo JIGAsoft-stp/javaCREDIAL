@@ -14,6 +14,7 @@
         <!--<link rel="stylesheet" href="resources/Styles/Style.css"></link>-->
         <h:outputStylesheet library="Styles" name="Style.css"></h:outputStylesheet>
         <h:outputStylesheet library="Styles" name="geralStyle.css"></h:outputStylesheet>
+        <h:outputStylesheet library="Styles" name="fonts.css"></h:outputStylesheet>
         
         <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
@@ -209,7 +210,7 @@
                              <h:outputText value="#{cli.apelido}"/>
                          </p:column>
                          <p:column headerText="Info" width="10" >
-                             <h:outputLabel class="icon-info" style="font-weight: bold;" title="Mais informação de #{cli.nome.trim()}" value="Mais" >
+                             <h:outputLabel class="icon-info" style="font-weight: bold;" title="Mais informação de #{cli.nome.trim()}" >
                                  <p:ajax event="click" update=":infoCliente" process="@this" listener="#{clienteBean.showInfoCliente(cli)}" />
                              </h:outputLabel>
                          </p:column>

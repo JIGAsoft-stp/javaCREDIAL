@@ -190,6 +190,7 @@ public class RelatorioBean implements Serializable
                   {
                       if((relatorio.getLocalTrabalho() != null && relatorio.getLocalTrabalho().length()>0) && (relatorio.getLocalidade() != null && relatorio.getLocalidade().length()>0))
                       {
+//                          System.err.println(relatorio);
                             info = listagemDao.info(relatorio.getParametro(), relatorio.getDataInicial(), relatorio.getDataFinal(), relatorio.getLocalTrabalho(), relatorio.getLocalidade(),relatorio.getAgencia(),Integer.valueOf(relatorio.getTipoCredito()));
                             total = info.get((info.size()-1)).getValorCredito();
                              info.remove((info.size()-1));

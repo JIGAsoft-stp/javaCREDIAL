@@ -234,9 +234,12 @@ public class CreditoBean implements Serializable
             Object o = cd.regSequenciaCheque(getSequenciaCheque());
             if (o != null && o.equals("true")) {
                 Mensagem.msgInfo("Nova Sequência de Cheque");
-                sequenciaCheque.setBanco(pagamentoDao.devolverNome(sequenciaCheque.getBanco()));
-                sequenciaCheque.setAgencia(pagamentoDao.devolverNomeAgencia(sequenciaCheque.getAgencia()));
-                cheques.add(sequenciaCheque);
+//                sequenciaCheque.setBanco(pagamentoDao.devolverNome(sequenciaCheque.getBanco()));
+//                sequenciaCheque.setAgencia(pagamentoDao.devolverNomeAgencia(sequenciaCheque.getAgencia()));
+//                cheques.add(sequenciaCheque);
+
+                cheques =  administracaoDao.listaChequesDisponiveis();
+                
                 RequestContext.getCurrentInstance().execute("limparCamposSequencia()");
                 RequestContext.getCurrentInstance().update("formAdmAh:admGrowl");
                 RequestContext.getCurrentInstance().update("formAdmAh:chequesTabela");

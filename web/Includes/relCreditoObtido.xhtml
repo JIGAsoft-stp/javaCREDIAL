@@ -56,7 +56,8 @@
                 <h:panelGrid columns="2"  class="panelG">
                     <h:outputLabel value="Local de trabalho" />
                     <h:selectOneMenu class="select localTCredito" style="width: 150px;" value="#{relatorioBean.relatorio.localTrabalho}" id="localT">
-                        <f:selectItem itemLabel="(Selecione)" />
+                        <!--<f:selectItem itemLabel="(Selecione)" />-->
+                        <f:selectItem itemLabel="Todos" itemValue="-1" />
                         <f:selectItems value="#{relatorioBean.listaLocalTrabalho}" var="local" itemLabel="#{local.value}" itemValue="#{local.id}"/>
                         <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
                                   onstart="mostrarRelCreditoObtido()"
@@ -66,7 +67,8 @@
                     </h:selectOneMenu>
                     <h:outputLabel value="Localidade"/>
                     <h:selectOneMenu class="select localidadeCredito" style="width: 150px;" value="#{relatorioBean.relatorio.localidade}" id="localLidade">
-                          <f:selectItem itemLabel="(Selecione)" />
+                          <!--<f:selectItem itemLabel="(Selecione)" />-->
+                           <f:selectItem itemLabel="Todas" itemValue="-1" />
                         <f:selectItems value="#{relatorioBean.listaLocalidade}" var="localidade" itemValue="#{localidade.id}" itemLabel="#{localidade.value}"/>
                         <p:ajax event="change" listener="#{relatorioBean.CarregarQuantidadeCredito(null)}"
                                   onstart="mostrarRelCreditoObtido()"

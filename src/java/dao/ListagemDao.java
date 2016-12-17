@@ -35,9 +35,9 @@ public class ListagemDao implements Serializable
     private String resultado;
     private Relatorio relatorio = null;
     
-    public List<Relatorio> info(String s,Date dataInicial, Date dataFinal,String param1, String param2,String agencia, int idTipoCredito)
+    public List<Relatorio> info(String s,Date dataInicial, Date dataFinal,String idLocalTrabalo, String idLocalidade,String agencia, int idTipoCredito)
     {
-        sql = "SELECT *FROM TABLE(FUNCT_LOAD_STATUS_CLIENTE(?,?,?,?,?,?,?))";
+        sql = "SELECT *FROM TABLE(FUNCT_REP_CREDITOCONCEBIDO(?,?,?,?,?,?,?))";
         Conexao conexao = new Conexao();
         ResultSet re2 = null;
         List<Relatorio> info = new ArrayList<>();
@@ -49,8 +49,8 @@ public class ListagemDao implements Serializable
                 ps.setString(1, s);
                 ps.setDate(2, OperacaoData.toSQLDate(dataInicial));
                 ps.setDate(3, OperacaoData.toSQLDate(dataFinal));
-                ps.setString(4, param1);
-                ps.setString(5, param2);
+                ps.setString(4, idLocalTrabalo);
+                ps.setString(5, idLocalidade);
                 ps.setObject(6, agencia);
                 ps.setObject(7, idTipoCredito);
                 re2 = ps.executeQuery();

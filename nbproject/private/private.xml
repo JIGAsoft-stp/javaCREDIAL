@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/mnt/Data/allProject/jCREDIAL/Credial/src/java/bean/ClienteBean.java</file>
-            <file>file:/mnt/Data/allProject/jCREDIAL/Credial/web/R.ClienteTest.xhtml</file>
-            <file>file:/mnt/Data/allProject/jCREDIAL/Credial/src/java/bean/PagamentoBean.java</file>
-            <file>file:/mnt/Data/allProject/jCREDIAL/Credial/web/resources/JQuery/formCliente.js</file>
-            <file>file:/mnt/Data/allProject/jCREDIAL/Credial/web/Includes/addPagto.xhtml</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/bean/RelatorioBean.java</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/dao/ListagemDao.java</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/AdmItem3.xhtml</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCreditoObtido.xhtml</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/modelo/Relatorio.java</file>
         </group>
     </open-files>
 </project-private>
