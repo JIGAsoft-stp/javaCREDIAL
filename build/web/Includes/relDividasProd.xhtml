@@ -78,7 +78,10 @@
                                     listener="#{relatorioBean.relatorioDividaProduto()}"  />
                         </h:selectOneMenu>
                     </section>
-
+                    <h:outputLabel value="EXCEL"  class="exportDoc" >
+                        <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportPDFDivida()}" >
+                        </p:ajax>
+                    </h:outputLabel>
                 </div>
                 <p:dataTable value="#{relatorioBean.listaDividaProduto}" var="dividaP" id="tabelaDividaProduto" scrollHeight="350" scrollable="true"
                              emptyMessage="Nenhum registro encontrado">

@@ -95,10 +95,14 @@
                                     listener="${relatorioBean.relatorioCheque()}"/>
                         </h:selectOneMenu>
                     </section>
+                    <h:outputLabel value="EXCEL"  class="exportDoc" >
+                        <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportEcellCheque()}" >
+                        </p:ajax>
+                    </h:outputLabel>
                 </div>
                     <br></br>
                 <p:dataTable value="#{relatorioBean.cheques}" emptyMessage=""  var="cheque" id="tabelaCheques" scrollable="true" scrollHeight="350">
-                    <p:column headerText="NIF" sortBy="#{cheque.nif}">
+                    <p:column headerText="NIF">
                         <h:outputText value="${cheque.nif}"/>
                     </p:column>
                     <p:column headerText="Nome" sortBy="#{cheque.nome}">

@@ -5,6 +5,7 @@
  */
 package bean;
 
+import Export.RelatorioConverter;
 import dao.ListagemDao;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -90,5 +91,13 @@ public class RelatorioHomologoBin implements Serializable
             System.err.println("data erro");
         }
         
+    }
+    
+    public void exportPDF(){
+        RelatorioConverter.xports(new RelatorioConverter.ClienteHomologo(), TableRelatorioHomologo, RelatorioConverter.Type.PDF);
+    }
+    
+    public void exportEcell(){
+        RelatorioConverter.xports(new RelatorioConverter.ClienteHomologo(), TableRelatorioHomologo, RelatorioConverter.Type.EXCEL);
     }
 }

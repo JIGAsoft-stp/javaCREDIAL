@@ -65,6 +65,10 @@
                                 process="dataF dataInicial agenciaCliente tipoCreditoCliente">
                      </p:ajax>
                 </h:selectOneMenu>
+                <h:outputLabel value="EXCEL"  class="exportDoc" >
+                    <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportEcellCliente()}" >
+                    </p:ajax>
+                </h:outputLabel>
             </h:panelGrid>
             <p:dataTable value="#{relatorioBean.info}"  scrollable="true" scrollHeight="400"
                 id="relatorioTabela" selection="#{relatorioBean.relatorio}"  rowKey="#{info.nif}"

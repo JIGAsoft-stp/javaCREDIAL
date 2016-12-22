@@ -1,15 +1,16 @@
 
 package bean;
 
+import Export.RelatorioConverter;
 import dao.ClienteDao;
 import dao.CreditoDao;
 import dao.ListagemDao;
 import dao.PagamentoDao;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import modelo.Comobox;
 import modelo.Relatorio;
@@ -414,5 +415,68 @@ public class RelatorioBean implements Serializable
                 Validation.AtualizarCompoente("relatorioCobranca", "totalCobranca");
             }
         }
+    }
+    public void exportPDFCliente() {
+        RelatorioConverter.xports(new RelatorioConverter.Cliente(), info, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellCliente() {
+        RelatorioConverter.xports(new RelatorioConverter.Cliente(), info, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFCobranca() {
+        RelatorioConverter.xports(new RelatorioConverter.Cobranca(), listaCobranca, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellCobranca() {
+        RelatorioConverter.xports(new RelatorioConverter.Cobranca(), listaCobranca, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFTAEG() {
+        RelatorioConverter.xports(new RelatorioConverter.CapitalTAEG(), listaDividaCapital, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellTAEG() {
+        RelatorioConverter.xports(new RelatorioConverter.CapitalTAEG(), listaDividaCapital, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFCheqe() {
+        RelatorioConverter.xports(new RelatorioConverter.Cheque(), cheques, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellCheque() {
+        RelatorioConverter.xports(new RelatorioConverter.Cheque(), cheques, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFConcebido() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoConebido(), infoCredito, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellConcebido() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoConebido(), infoCredito, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFCreditoObetido() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), info, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellCreditoObetido() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), info, RelatorioConverter.Type.EXCEL);
+    }
+
+    public void exportPDFDivida() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), listaDividaProduto, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellDivida() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), listaDividaProduto, RelatorioConverter.Type.EXCEL);
+    }
+    
+    public void exportPDFHomologo() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), listaDividaProduto, RelatorioConverter.Type.PDF);
+    }
+
+    public void exportEcellHomologo() {
+        RelatorioConverter.xports(new RelatorioConverter.CreditoObtido(), listaDividaProduto, RelatorioConverter.Type.EXCEL);
     }
 }

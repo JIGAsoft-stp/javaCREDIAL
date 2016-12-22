@@ -499,3 +499,13 @@ function restricao()
         $(".modalErroTest").hide();
     }
  
+ function openAllDocument(url){
+     window.open(url);
+     $(".modalImage").hide();
+ }
+ 
+//$(".exportDoc").on("click", exportDoc);
+
+function exportDoc() {
+    $(".modalImage").show();
+}

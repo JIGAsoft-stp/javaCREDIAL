@@ -1,6 +1,7 @@
 
 package modelo;
 
+import Export.RelatorioConverter;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -50,7 +51,10 @@ public class Relatorio implements Serializable
     private String reembolso;
     private String agencia;
     private Date data;
+    public Object export;
+    
     public Relatorio() {
+ 
     }
 
     public Relatorio(String diferenca, String anoAtual, String anoPassado) {

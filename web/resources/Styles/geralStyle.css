@@ -364,3 +364,10 @@ iframe{
 .ui-growl-icon-close {
     background: white;
 }
+/**
+for export document
+**/
+.exportDoc{
+    cursor: pointer;
+    color: #4d87e2 !important;
+}

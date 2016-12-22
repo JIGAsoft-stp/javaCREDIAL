@@ -74,6 +74,10 @@
                                     listener="#{relatorioBean.relatorioDividaCapital()}"/>
                          </h:selectOneMenu>
                 </section>
+                <h:outputLabel value="EXCEL" class="exportDoc" >
+                    <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportEcellTAEG()}" >
+                    </p:ajax>
+                </h:outputLabel>
             </div>    
             <p:dataTable value="#{relatorioBean.listaDividaCapital}" emptyMessage="Nenhum registro encontrado"
                          id="tabelaDividaCapital" var="capital" scrollHeight="350" scrollable="true">

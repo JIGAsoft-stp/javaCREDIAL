@@ -87,6 +87,10 @@
                          process="formmHoform"
                         listener="#{relatorioHomologoBin.pesquisar()}"  />
             </h:selectOneMenu>
+            <h:outputLabel value="EXCEL" class="exportDoc" >
+                <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioHomologoBin.exportEcell()}" >
+                </p:ajax>
+            </h:outputLabel>
         </div>
         <div>
             <p:dataTable id="tabableHomo" value="#{relatorioHomologoBin.tableRelatorioHomologo}" var="trh" class="tableCRH" style="height: 130px; width: 70%; margin-left: 10px;">

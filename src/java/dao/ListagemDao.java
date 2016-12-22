@@ -1,6 +1,7 @@
 
 package dao;
 
+import Export.RelatorioConverter;
 import bean.RelatorioHomologoBin;
 import bean.relatorioCobranca;
 import conexao.Call;
@@ -64,6 +65,7 @@ public class ListagemDao implements Serializable
                         relatorio.setApelido(re2.getString("APELIDO"));
                         relatorio.setValorCredito(re2.getString("VALOR"));
                         relatorio.setLocalTrabalho(re2.getString("NOME LOCAL TRABALHO"));
+                        relatorio.export = new RelatorioConverter.CreditoObtido();
                         info.add(relatorio);
                     }
                     re2.close();
@@ -125,8 +127,11 @@ public class ListagemDao implements Serializable
                     cs.setInt(6, Integer.valueOf(bin.getRelatorioHomologoBin().getTipoCredito()));
                 rs=cs.executeQuery();
                 while (rs.next())
-                {                
-                  l.add(new Relatorio( rs.getString("DIFIFERENCA VALOR") , rs.getString("VALOR DATA"), rs.getString("VALOR ANTIGO")));
+                { 
+                    Relatorio r = new Relatorio( rs.getString("DIFIFERENCA VALOR") , rs.getString("VALOR DATA"), rs.getString("VALOR ANTIGO"));
+                    r.export = new RelatorioConverter.ClienteHomologo();
+                  l.add(r);
+                  
                 }
                 rs.close();
 
@@ -168,7 +173,7 @@ public class ListagemDao implements Serializable
                         relatorio.setTaeg(rs.getString("TAEG"));
                         relatorio.setEstado(rs.getString("ESTADO"));
                         relatorio.setCapitalConcebido(rs.getString("VALOR CREDITO"));
-                
+                        relatorio.export = new RelatorioConverter.Cliente();
                         info.add(relatorio);
                     }
                     rs.close();
@@ -203,8 +208,10 @@ public class ListagemDao implements Serializable
                 cs.setInt(5, Integer.valueOf(bin.getRelatorioCobranca().getDiferenca()));
                 rs=cs.executeQuery();
                 while (rs.next())
-                {                
-                  l.add(new Relatorio(rs.getObject("NOME")+" "+rs.getObject("APELIDO"), rs.getString("SIGLA BANCO"), rs.getString("REMBOLSO"), rs.getString("NUM DOC REAL"), rs.getString("DATA DOC PAG REAL"), rs.getString("NUMERO DOCUMENTO")));
+                {  
+                   Relatorio r = new Relatorio(rs.getObject("NOME")+" "+rs.getObject("APELIDO"), rs.getString("SIGLA BANCO"), rs.getString("REMBOLSO"), rs.getString("NUM DOC REAL"), rs.getString("DATA DOC PAG REAL"), rs.getString("NUMERO DOCUMENTO"));
+                   r.export = new RelatorioConverter.CreditoConebido();
+                   l.add(r);
                 }
                 bin.setTableRelatorioCobranca(l);
             } catch (SQLException ex) {
@@ -225,8 +232,9 @@ public class ListagemDao implements Serializable
             {
                  while(rs.next())
                 {
-                  
-                    info.add(new Relatorio(rs.getString("NIF"),rs.getString("NOME"),rs.getString("VALOR CHEQUE"), rs.getString("ENDOSSADO")));
+                    Relatorio r = new Relatorio(rs.getString("NIF"),rs.getString("NOME"),rs.getString("VALOR CHEQUE"), rs.getString("ENDOSSADO"));
+                    r.export = new RelatorioConverter.Cheque();
+                    info.add(r);
                 }
                 rs.close();
             }
@@ -296,6 +304,7 @@ public class ListagemDao implements Serializable
                     relatorio.setDossier(rs.getString("DOSSIER"));
                     relatorio.setTaeg(rs.getString("TAEG"));
                     relatorio.setEstado(rs.getString("ESTADO"));
+                    relatorio.export = new RelatorioConverter.DividaPorProduto();
                     info.add(relatorio);
                 }
                 rs.close();  
@@ -327,6 +336,7 @@ public class ListagemDao implements Serializable
                     relatorio.setNumDocPrevisao(rs.getString("NUMERO DOCUMENTO"));
                     relatorio.setDataReal(rs.getString("DATA DOC PAG REAL"));
                     relatorio.setDataPrevista(rs.getString("DATA DOC PAGAMENTO"));
+                    relatorio.export = new RelatorioConverter.Cobranca();
                     info.add(relatorio);
                 }
                 rs.close();  
