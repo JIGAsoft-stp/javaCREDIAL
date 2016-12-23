@@ -83,7 +83,7 @@
                                   listener="#{relatorioBean.relatorioCobranca()}"/>
                     </h:selectOneMenu>
                 </section> 
-                <h:outputLabel value="EXCEL"  class="exportDoc" >
+                <h:outputLabel value="Exportar"  class="exportDoc" >
                     <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportEcellCobranca()}" >
                     </p:ajax>
                 </h:outputLabel>

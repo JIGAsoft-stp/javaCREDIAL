@@ -3,21 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCrescHomo.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCobrancas.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/resources/JQuery/ajaxLoading.js</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCapitalTAEG.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/Export/GenericExcel.java</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relDividasProd.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCreditoObtido.xhtml</file>
             <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/Export/RelatorioConverter.java</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCreditoConcedido.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/resources/JQuery/formCliente.js</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/AdmItem2.xhtml</file>
             <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/bean/RelatorioBean.java</file>
             <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Relatorio.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relCheques.xhtml</file>
-            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/web/Includes/relClientes.xhtml</file>
+            <file>file:/mnt/Data/pro/CREDIALj/javaCREDIAL/src/java/Export/GenericExcel.java</file>
         </group>
     </open-files>
 </project-private>

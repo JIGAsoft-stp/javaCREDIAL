@@ -5,11 +5,10 @@
  */
 package Export;
 
-import static Export.GenericExcel.reString;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.primefaces.context.RequestContext;
+import sessao.SessionUtil;
 
 /**
  *
@@ -31,7 +30,7 @@ public class RelatorioConverter {
             + /*"Apelido"*/ " " + toString(relatorio.getApelido()),
             /*"Valor Credito"*/ toString(relatorio.getValorCredito()),
             /*"Local Trabalho"*/ toString(relatorio.getLocalTrabalho()),
-            /*"Q. Credtido"*/ toString(relatorio.getQuantidadeCredito()),
+            /*"Q. Credtido"*/ toString(relatorio.getValorCredito()),
             /*"Ano Actual"*/ toString(relatorio.getAnoAtual()),
             /*"Ano Passado"*/ toString(relatorio.getAnoPassado()),
             /*"Deferença"*/ toString(relatorio.getDiferenca()),
@@ -143,14 +142,14 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.ValorCredito,
                     RelatorioConverter.MapParam.LocalTrabalho,};
-                GenericPDFs.createDoc("10900001", "cliente", "cliente", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "cliente", "cliente", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
             } else {
                 GenericExcel.showItem = new MapParam[]{
                     RelatorioConverter.MapParam.NIF,
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.ValorCredito,
                     RelatorioConverter.MapParam.LocalTrabalho,};
-                GenericExcel.createDoc("10900001", "cliente", "cliente", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "cliente", "cliente", new RelatorioConverter(relList).getList(), -1);
             }
         }
 
@@ -167,13 +166,13 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.NIF,
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.QCredtido,};
-                GenericPDFs.createDoc("10900001", "Credito Obtido", "Credito Obtido", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Credito Obtido", "Credito Obtido", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
             } else {
                 GenericExcel.showItem = new RelatorioConverter.MapParam[]{
                     RelatorioConverter.MapParam.NIF,
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.QCredtido,};
-                GenericExcel.createDoc("10900001", "Credito Obtido", "Credito Obtido", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Credito Obtido", "Credito Obtido", new RelatorioConverter(relList).getList(), -1);
             }
 
         }
@@ -191,14 +190,14 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.AnoActual,
                     RelatorioConverter.MapParam.AnoPassado,
                     RelatorioConverter.MapParam.Deferenca,};
-                GenericPDFs.createDoc("10900001", "Clientes Homologo", "Clientes Homologo", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.VERTICAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Clientes Homologo", "Clientes Homologo", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.VERTICAL, -1);
 
             } else {
                 GenericExcel.showItem = new RelatorioConverter.MapParam[]{
                     RelatorioConverter.MapParam.AnoActual,
                     RelatorioConverter.MapParam.AnoPassado,
                     RelatorioConverter.MapParam.Deferenca,};
-                GenericExcel.createDoc("10900001", "Clientes Homologo", "Clientes Homologo", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Clientes Homologo", "Clientes Homologo", new RelatorioConverter(relList).getList(), -1);
 
             }
         }
@@ -219,7 +218,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.CapitalConcebido,
                     RelatorioConverter.MapParam.MontanteEmDivida,
                     RelatorioConverter.MapParam.TAEG,};
-                GenericPDFs.createDoc("10900001", "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
 
             }
             else {
@@ -230,7 +229,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.CapitalConcebido,
                     RelatorioConverter.MapParam.MontanteEmDivida,
                     RelatorioConverter.MapParam.TAEG,};
-                GenericExcel.createDoc("10900001", "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), -1);
 
             }
         }
@@ -253,7 +252,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.DataReal,
                     RelatorioConverter.MapParam.DataPrevista
                 };
-                GenericPDFs.createDoc("10900001", "Cobrança", "Cobrança", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Cobrança", "Cobrança", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
             }
             else
             {
@@ -266,7 +265,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.DataReal,
                     RelatorioConverter.MapParam.DataPrevista
                 };
-                GenericExcel.createDoc("10900001", "Cobrança", "Cobrança", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Cobrança", "Cobrança", new RelatorioConverter(relList).getList(), -1);
 
             }
         }
@@ -287,7 +286,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.TAEG,
                     RelatorioConverter.MapParam.Estado}
                         ;
-                GenericPDFs.createDoc("10900001", "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
             } else {
                 GenericExcel.showItem = new RelatorioConverter.MapParam[]{
                     RelatorioConverter.MapParam.NIF,
@@ -298,7 +297,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.TAEG,
                     RelatorioConverter.MapParam.Estado
                 };
-                GenericExcel.createDoc("10900001", "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Credito Concebito", "Credito Concebito", new RelatorioConverter(relList).getList(), -1);
 
             }
         }
@@ -317,7 +316,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.CreditoSolicitado,
                     RelatorioConverter.MapParam.MontanteTotalCredito,
                     RelatorioConverter.MapParam.ValorPago,};
-                GenericPDFs.createDoc("10900001", "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
 
             } else {
                 GenericExcel.showItem = new RelatorioConverter.MapParam[]{
@@ -326,7 +325,7 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.CreditoSolicitado,
                     RelatorioConverter.MapParam.MontanteTotalCredito,
                     RelatorioConverter.MapParam.ValorPago,};
-                GenericExcel.createDoc("10900001", "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Divida por Produto", "Divida por Produto", new RelatorioConverter(relList).getList(), -1);
 
             }
         }
@@ -344,14 +343,14 @@ public class RelatorioConverter {
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.ValorCheque,
                     RelatorioConverter.MapParam.DataDeEndose,};
-                GenericPDFs.createDoc("10900001", "Creque", "Creque", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
+                GenericPDFs.createDoc(SessionUtil.getUserlogado().getNif(), "Creque", "Creque", new RelatorioConverter(relList).getList(), GenericPDFs.OrientacaoPagina.HORIZONTAL, -1);
             } else {
                 GenericExcel.showItem = new RelatorioConverter.MapParam[]{
                     RelatorioConverter.MapParam.NIF,
                     RelatorioConverter.MapParam.NomeCompleto,
                     RelatorioConverter.MapParam.ValorCheque,
                     RelatorioConverter.MapParam.DataDeEndose,};
-                GenericExcel.createDoc("10900001", "Creque", "Creque", new RelatorioConverter(relList).getList(), -1);
+                GenericExcel.createDoc(SessionUtil.getUserlogado().getNif(), "Creque", "Creque", new RelatorioConverter(relList).getList(), -1);
             }
         }
 

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import lib.Moeda;
+import org.primefaces.push.impl.JSONEncoder;
 
 /**
  *
@@ -45,8 +46,8 @@ public class ConfigDoc implements Serializable {
     }
 
     public static class Empresa implements Serializable {
-
-        public static String NOME = getDados("NOME").toUpperCase();
+        
+        public static String NOME = "CREDIAL";
         public static String ENDERECO = getDados("RESIDENCIA").toUpperCase();
         public static String CAIXAPOSTAL = "Caixa Postal ".toUpperCase() + getDados("CP").toUpperCase();
         public static String REPUBLICA = "REPUBLICA DEMOCRATICA DE S. TOMÉ E PRINCIPE";

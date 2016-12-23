@@ -87,7 +87,7 @@
                          process="formmHoform"
                         listener="#{relatorioHomologoBin.pesquisar()}"  />
             </h:selectOneMenu>
-            <h:outputLabel value="EXCEL" class="exportDoc" >
+            <h:outputLabel value="Exportar" class="exportDoc" >
                 <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioHomologoBin.exportEcell()}" >
                 </p:ajax>
             </h:outputLabel>

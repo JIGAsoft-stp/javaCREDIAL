@@ -65,7 +65,7 @@
                                 process="dataF dataInicial agenciaCliente tipoCreditoCliente">
                      </p:ajax>
                 </h:selectOneMenu>
-                <h:outputLabel value="EXCEL"  class="exportDoc" >
+                <h:outputLabel value="Exportar"  class="exportDoc" >
                     <p:ajax process="@this" event="click" onstart="exportDoc()" listener="#{relatorioBean.exportEcellCliente()}" >
                     </p:ajax>
                 </h:outputLabel>
